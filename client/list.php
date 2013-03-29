@@ -8,13 +8,13 @@
 	<script type="text/javascript" src="../lib/javascript/myFunctions.js"></script>
 </head>
 
-<body>
+<body onload="updateBasketButton()">
 	
-	<!-- <form method="get" action="basket.php" class="rightContent">
-		<input id="basketString" name="basketString" type="hidden" value=""/>
-		<input onclick="updateBasket()" type="submit"  value="Go to basket" />
-	</form> -->
-	<button onclick="goToBasket()" class="rightContent">Go to basket</button>
+	<form method="get" action="" >
+		Search: <input type="search" name="searchString" onkeyup="search(this.val)"/> 
+		<input type="submit" value="search" />
+	</form>
+	<button id="basketButton" onclick="goToBasket()" class="rightContent">Go to basket</button>
 <?php
 require_once "../lib/myFunctions.php";
 
@@ -25,20 +25,20 @@ $result = getCategories($mysqli);
 echo showCategoriesMenu($result);
 
 
-/*$basketString = '<div id="basket" class="rightContent">'; 
-$basketString .= 
-$basketString .= '<a href="basket.php" id="goToBasket"> Go to basket </a> </div>';
-echo $basketString;
-*/	
 if (isset($_GET['category'])){
 	
 	$sqlQuery = "SELECT * FROM product WHERE category='". $_GET['category']."'";
-	
-	$result = echoQuery($sqlQuery, "Data retrieved.", $mysqli);
 }else{
 	$sqlQuery = "SELECT * FROM product";
-	$result = echoQuery($sqlQuery, "Data retrieved.", $mysqli);
 }
+//if search is set
+if (isset($_GET['searchString'])){
+	$searchString = $_GET['searchString'];
+	//searching in name and description columns	
+	$sqlQuery = "SELECT * FROM product WHERE (name like  '%$searchString%') OR
+				 (description like  '%$searchString%') OR (category like  '%$searchString%')";
+}
+$result = echoQuery($sqlQuery, "Data retrieved.", $mysqli);
 echo showItemsForCustomer($result);
 
 ?>

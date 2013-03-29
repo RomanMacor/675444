@@ -34,7 +34,7 @@ function getCategories($db){
 Renders HTML table listing results
 */
 function showItems($result){
-	$buildHTML = "<table border ='1'>";
+	$buildHTML = "<table border ='1' id=productList>";
 	
 	$buildHTML .= "<tr> <th> <a href='list.php?orderBy=id'> ID </a> </th> <th> <a href='list.php?orderBy=name'> Name </a> </th> <th>
 					 <a href='list.php?orderBy=quantity'> Quantity </a> </th> <th> <a href='list.php?orderBy=price'> Price </a> </th>
@@ -50,7 +50,7 @@ function showItems($result){
 	return $buildHTML;
 }
 function showItemsForCustomer($result){
-	$buildHTML = "<table border ='1'>";
+	$buildHTML = "<table border ='1' id=productList>";
 	
 	
 	$buildHTML .= "<tr> <th>Name</th> <th>Price</th> <th>Category</th> <th>Description</th></tr>";

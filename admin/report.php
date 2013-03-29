@@ -8,7 +8,6 @@
 </head>
 
 <body>
-
 <form method="get" action="">
 	Show:
 	<select name="limit"> 
