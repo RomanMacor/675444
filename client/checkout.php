@@ -11,7 +11,9 @@ echo '<a href="list.php"> Back to the shoping</a>';
 //TODO: validation
 $fName = $_POST['fName'];
 $lName = $_POST['lName'];
-$address = $_POST['address'];
+$address = $_POST['town'].", ";
+$address .= $_POST['street'].", ";
+$address .= $_POST['post'];
 $email = $_POST['email'];
 
 $basketObj = json_decode($_POST['basketString']);
