@@ -14,14 +14,16 @@ $sqlQuery = "CREATE TABLE IF NOT EXISTS product(
 	quantity INT(10),
 	price INT(10),
 	category varchar(25),
-	description varchar(300)
+	description varchar(300),
+	img varchar(35)
 	)";
 
 echoQuery($sqlQuery, "Table product was successfully created.",$mysqli);
 
 $sqlQuery = "CREATE TABLE IF NOT EXISTS category(
 	id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	name varchar(25)
+	name varchar(25),
+	img varchar(35)
 	)";
 
 echoQuery($sqlQuery, "Table category was successfully created.",$mysqli);

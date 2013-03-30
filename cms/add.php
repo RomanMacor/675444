@@ -8,6 +8,8 @@
 	$selectedPrice="";
 	$selectedCategory="";
 	$selectedDescription="";
+	$selectedPicture = null;
+	
 
 	//ID is selected in case of editing
 	if(isset($_GET['id'])){
@@ -23,6 +25,7 @@
 			$selectedPrice=$row['price'];
 			$selectedCategory=$row['category'];
 			$selectedDescription=$row['description'];
+			$selectedPicture=$row['img'];
 		}else{
 			echo "QUERY NOT SUCCESFUL:".$query;
 		}
@@ -37,7 +40,8 @@
 </head>
 
 <body>
-	<form  method="post" action= <?php echo isset($_GET['id']) ? "added.php?id=$selectedId" : "added.php"; ?> >
+	<form  method="post" action= <?php echo isset($_GET['id']) ? "added.php?id=$selectedId" : "added.php"; ?> 
+			enctype="multipart/form-data">
 		<div>
 			<label for="name"> Name: 
 			</label>
@@ -46,7 +50,7 @@
 		<div>
 			<label for ="quantity"> Quantity:
 			</label>
-			<input type ="number" size="6" name="quantity" min="1" required pattern="\d+"  value=<?php echo isset($_GET['id']) ? $selectedQuantity : "1"; ?>>
+			<input type ="number" size="6" name="quantity" required pattern="\d+"  value=<?php echo isset($_GET['id']) ? $selectedQuantity : "1"; ?>>
 		</div>
 		<div>
 			<label for ="price"> Price:
@@ -83,6 +87,13 @@
 				<?php echo $selectedDescription; ?>
 			</textarea>
 		</div>			
+		<div>
+			<label for ="Picture">  <?php echo isset($_GET['id']) ? "Selected picture is: ". $selectedPicture : "Picture:"; ?>
+			</label>
+		
+			<input type="file" name="picture" id="picture" accept="image/*">
+			<input type="hidden" name="setPicture" value=<?php echo $selectedPicture; ?>>
+		</div>
 		<div>
 			<input type="submit" value=<?php echo isset($_GET['id']) ? "Edit" : "Add"; ?> >
 			<input type="reset" value="Clear">

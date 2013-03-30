@@ -10,12 +10,12 @@ if($mysqli->query("USE shop")){
 	if($result->num_rows > 0){ 
 		echo "Database is ready. <br/>";
 	} else{
-		echo "Database will be created now.";
+		echo "Database hase been created.";
 		//creating database;
 		include('databaseini.php');
 	}
 }else{
-	echo "Database will be created now.";
+	echo "Database hase been created.";
 	//creating database;
 	include('databaseini.php');
 	
@@ -37,7 +37,8 @@ if($mysqli->query("USE shop")){
 
 	<div> <a href="erase_all_data.php"> Erase all data</a> </div>
 	<div> <a href="insert_testing_data.php"> Insert testing data</a> </div>
-	
+	<div> <a href="manageCategories.php"> Mangage categories</a> </div>
+
 	
 </body>
 

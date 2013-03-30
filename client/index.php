@@ -16,13 +16,15 @@
 
      <li><a href="">Home</a></li>
 
-     <li><a href="list.php">Products</a></li>
+     <li><a href="list.php">All Products</a></li>
 
    </ul>
 </nav>
 <?php
 	$result = getCategories($mysqli);	
-	echo showCategoriesMenu($result);
+	echo showCategoriesPictures($result);
+	//echo showCategoriesMenu($result);
+
 
 ?>
 </body>
