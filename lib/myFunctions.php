@@ -2,7 +2,9 @@
 /* 
 Connects to database.
 */
-function connect($server, $username, $password, $database){
+function connect($server = "localhost", $username = "root", $password = "", $database = "shop"){
+	//setting default values
+	
 	$mysqli = mysqli_connect($server, $username, $password, $database);
 	if(mysqli_connect_errno($mysqli)){
 		exit("Failed  to connect to database: (error message) ". mysqli_connect_error() ."<br/>");
@@ -13,6 +15,7 @@ function connect($server, $username, $password, $database){
 }
 /*
 Executes query
+This has become obsolete
 */
 function echoQuery($query, $successString, $db){
 	$result = $db->query($query);
@@ -23,23 +26,29 @@ function echoQuery($query, $successString, $db){
 		exit("Error: ". $db->error);
 	}
 }
-
+// Fetches the product with specified ID
 function getItemById($id){
-	return $db->query("SELECT * FROM products WHERE id=$id");
+	$db = connect("localhost","root","","shop");
+	$result = $db->query("SELECT * FROM product WHERE id=$id");
+	$db->close();
+	return $result;
 }
-function getCategories($db){
+//Fetches all category
+function getCategories(){
+	$db = connect();
 	return $db->query("SELECT * FROM category");
 }
 /*
-Renders HTML table listing results
+Renders HTML table listing results for cms
+Takes parameter result list
 */
 function showItems($result){
 	$buildHTML = "<table border ='1' id=productList>";
-	
+	//table header
 	$buildHTML .= "<tr> <th> <a href='list.php?orderBy=id'> ID </a> </th> <th> <a href='list.php?orderBy=name'> Name </a> </th> <th>
 					 <a href='list.php?orderBy=quantity'> Quantity </a> </th> <th> <a href='list.php?orderBy=price'> Price </a> </th>
 					 <th> <a href='list.php?orderBy=category'> Category </a> </th> <th>Description</th> <th>Picture</th></tr>";
-	
+	//data
 	while($row = $result->fetch_object()){
 		$buildHTML .= "<tr> <td> $row->id </td> <td> $row->name </td> <td> $row->quantity </td> <td> $row->price </td> 
 						<td> $row->category </td> <td> $row->description </td> <td>$row->img</td>";
@@ -49,26 +58,32 @@ function showItems($result){
 	$buildHTML .= "</table>";
 	return $buildHTML;
 }
+/*
+Renders HTML table listing results for client pages
+Takes parameter result list
+*/
 function showItemsForCustomer($result){
-	$buildHTML = "<table border ='1' id=productList>";
+	$buildHTML = "<span id=productList> <ul > ";
 	
-	
-	$buildHTML .= "<tr> <th>Name</th> <th>Price</th> <th>Category</th> <th>Description</th> <th>Picture</th></tr>";
 	while($row = $result->fetch_object()){
 		$id = $row->id;
 		$name = $row->name;
 		$price = $row->price;
-		$category = $row->category;
-		$description = $row->description;
+		// $category = $row->category;
+		// $description = $row->description;
 
-		$buildHTML .= "<tr> <td> $name <td> $price </td> <td> $category </td> <td> $description </td> ";
-		$buildHTML .= "<td> <img src=../img/$row->img height=50 width=50 alt=$row->name > </td> ";
-		$buildHTML .= "<td> <button onclick=\"addToBasket($id)\"> Add to Basket </button> <input id=$id type=\"number\" value=1 size=3 /></td>";
-		$buildHTML .= "</tr>";
+		$buildHTML .= "<li class=product> <a href=detail.php?id=$id> <div> $name </div><img class=itemImage src=../user_img/$row->img alt=$row->name > </a>
+		  				<div> Price: $price £<div/>  <button onclick=\"addToBasket($id)\"> Add to Basket </button>
+		  				<input class=itemCount id=$id type=\"number\" value=1 /> </li>";
 	}
-	$buildHTML .= "</table>";
+	$buildHTML .= "</ul> </span>";
 	return $buildHTML;
 }
+/*
+Renders HTML table listing cagories for client pages
+Takes parameter result list
+*/
+
 function showCategories($result){
 	$buildHTML = "<table border ='1'";
 	$buildHTML .= "<tr> <th> <a href='list.php?orderBy=id'> ID </a> </th> <th> <a href='list.php?orderBy=name'> Name </a> </th> <th> Picture </th>";
@@ -79,32 +94,47 @@ function showCategories($result){
 		echo $buildHTML;
 	}
 }
-function showCategoriesMenu($nameOfCategories){
-	$buildHTML = "";
-	
-	if($nameOfCategories){
-		while($row = $nameOfCategories->fetch_object()){
+/*
+Renders navigation menu listing cagories for client pages
+Takes parameter result list
+*/
+function showCategoriesMenu($caregories){
+	$buildHTML = "<nav id=navigation> <ul>";
+
+	//adding Category button
+	$buildHTML .= "<li> <a href=index.php> Categories </a> </li>";
+
+	//adding All category
+	$buildHTML .= "<li> <a href=list.php> All </a> </li>";
+	if($caregories){
+		while($row = $caregories->fetch_object()){
 			
-			$buildHTML .= "<a href=list.php?category=$row->name> $row->name </a>";
+			$buildHTML .= "<li> <a href=list.php?category=$row->name> $row->name </a> </li>";
 			
 		}
+		$buildHTML .= " </ul> </nav>";
 		return $buildHTML;
 	}
 }
-function showCategoriesPictures($nameOfCategories){
-	$buildHTML = "";
+function showCategoriesPictures($caregories){
+
+	$buildHTML = "<ul>";
 	
-	if($nameOfCategories){
-		while($row = $nameOfCategories->fetch_object()){
+	if($caregories){
+		while($row = $caregories->fetch_object()){
 			
-			$buildHTML .= "<a href=list.php?category=$row->name> <img src=../img/$row->img height=100 width=100 alt=$row->name ><br>  $row->name <br></a> ";
+			$buildHTML .= "<li> <a href=list.php?category=$row->name> 
+							 <h3> $row->name <h3>
+							<img src=../user_img/$row->img height=100 width=100 alt=$row->name >
+							</a> </li>";
 			
 		}
+		$buildHTML .= "</ul>";
 		return $buildHTML;
 	}
 }
-//creates a row in a table
-//has to be surounded by table
+//Renders basket items
+
 function showBasketItems($basketString){
 	$mysqli = connect("localhost","root","","shop");
 	
@@ -137,12 +167,14 @@ function showBasketItems($basketString){
 	}
 		$table .="</table>";
 		echo $table;
-		echo "<p>Total is $total</p>";
+		echo "<p>Total is $total £</p>";
 		
 		$mysqli->close();	
 }
 	
-	
+/*
+Renders items ordered by user
+*/
 function showOrders($result){
 	$buildHTML = "<table border ='1'>";
 	
@@ -166,6 +198,9 @@ function showOrders($result){
 	$buildHTML .= "</table>";
 	return $buildHTML;
 }
+/*
+Renders orders that has been marked as delivered 
+*/
 function showReport($result){
 	$buildHTML = "<table border ='1'>";
 	
@@ -192,47 +227,56 @@ function showReport($result){
 	return $buildHTML;	
 }
 
-//erase!!
-$sqlQuery = "CREATE TABLE IF NOT EXISTS product_order(
-	id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	first_name varchar(25),
-	last_name varchar(25),
-	address varchar(100),
-	email varchar(35),
-	item_id INT(6),
-	quantity INT(10),
-	ordered_date DATE,
-	processed boolean,
-	processed_date DATE
-	)";
 
-// Need info about the customer
-function process($product_order){
-	//	reduce quantity of product
-	// check if quantity is too low
+//	reduce quantity of product
+// check if quantity is too low
 	
-	$mysqli = connect("localhost","root","","shop");
-	$query = "SELECT quantity FROM product WHERE id=$product_order->item_id"; 
+function process($product_order){
+	
+	
+	$mysqli = connect();
+	$itemId = $product_order->item_id;
+	$query = "SELECT * FROM product WHERE id=$itemId"; 
 	$result = $mysqli->query($query);
-	$currentQuantity =  $result->fetch_object()->quantity;
+	$item = $result->fetch_object();
+	if ($item === null){
+		return ("Item id: $itemId doesn't exist in the database");
+	}
+
+	$currentQuantity =  $item->quantity;
+	
+	// Storing name and id for report warning purpuses
+	$id =  $result->fetch_object()->id;
+	$name = $result->fetch_object()->name;
 
 	$newQuantity = $currentQuantity - $product_order->quantity;
-	//need some constant
-	if($newQuantity < 10){
-		//TODO: check for low stock
-	}
-	
+		
 	$query = "UPDATE product_order SET  processed= true, processed_date = CURDATE() WHERE id=$product_order->id"; 
 	$mysqli->query($query);
 
 	$query = "UPDATE product SET  quantity= $newQuantity WHERE id=$product_order->item_id"; 
 	$mysqli->query($query);
+	$mysqli->close();
+	//return warning if quality is lower than 10
+	// In ideal world this would be constant configurable by admin
+	if($newQuantity < 10){
+		$warning = "The quanity of item $name (id = $id) is less than 10 <br> quantity = $newQuantity 
+					<a href=../admin/manage_orders.php> Return to managing pages</a>"; 
+		return $warning;
+	}else{
+		return "";
+	}
+	
 }
+/*
+Changes the name of the file if such a file already exists
+*/
 function changeNameIfExists($name){
-	if (file_exists("../img/" . $name)){
+	if (file_exists("../user_img/" . $name)){
    		//RENAME
-    	 $filename  = pathinfo($name)['filename'];
-		 $extension = pathinfo($name)['extension'];
+		$path = pathinfo($name);
+    	 $filename  = $path['filename'];
+		 $extension = $path['extension'];
 		 $name       = $filename.'1.'.$extension;
 
        changeNameIfExists($name);
@@ -253,9 +297,29 @@ function validateAndSavePicture(){
       $_FILES["picture"]["type"] == "image/jpg" ) {
   
         $_FILES["picture"]["name"] = changeNameIfExists($_FILES["picture"]["name"]);
-        move_uploaded_file($_FILES["picture"]["tmp_name"], "../img/" . $_FILES["picture"]["name"]);
+        move_uploaded_file($_FILES["picture"]["tmp_name"], "../user_img/" . $_FILES["picture"]["name"]);
         return $_FILES["picture"]["name"];
   }
+}
+//adds echo
+function showItemDetail($result){
+
+	$row = $result->fetch_object();
+		$id = $row->id;
+		$name = $row->name;
+		$price = $row->price;
+		$category = $row->category;
+		$description = $row->description;
+
+		$buildHTML = "  <h2> $name </h2>
+						<img id=detailImage class=rightContent src=../user_img/$row->img alt=$row->name >
+		  				<div> Price: $price £<div/>  
+		  				<div> Description: $description <div/>  
+		  				<button onclick=addToBasket($id)> Add to Basket </button>
+		  				<input class=itemCount id=$id type=number value=1 />";
+	
+	
+	return $buildHTML;
 }
 
 ?>

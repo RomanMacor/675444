@@ -9,8 +9,13 @@ if (isset($_GET['id'])){
 	$sqlQuery = "SELECT * FROM product_order WHERE id=$id";	
 	$result = echoQuery($sqlQuery, "Data retrieved.", $mysqli);
 	$product_order = $result->fetch_object();
-	process($product_order);
-	header("Location: manage_orders.php");	
+	$warning = process($product_order);
+	if ($warning === ""){
+		header("Location: manage_orders.php");		
+	}else{
+		echo $warning;	
+	}
+	
 }else{
 	echo "id not set";
 }

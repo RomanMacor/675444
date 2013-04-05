@@ -4,24 +4,29 @@
 <head>
 	<meta charset="utf-8">
 	<title>Title of the document</title>
-	<link rel="stylesheet" href="../lib/css/styles.css" type="text/css"/>
+	<link rel="stylesheet" href="../css/default.css" type="text/css"/>
 	<script type="text/javascript" src="../lib/javascript/myFunctions.js"></script>
 </head>
 
 <body onload="updateBasketButton()">
-	
-	<form method="get" action="" >
-		Search: <input type="search" name="searchString" onkeyup="search(this.val)"/> 
-		<input type="submit" value="search" />
-	</form>
-	<button id="basketButton" onclick="goToBasket()" class="rightContent">Go to basket</button>
+
+
+	<div class="rightContent">
+		<form method="get" action="" >
+			Search: <input type="search" name="searchString" onkeyup="search(this.value)"/> 
+			<input type="submit" value="search" />
+		</form>
+
+
+		<button id="basketButton" onclick="goToBasket()" >Go to basket</button>
+	</div>
 <?php
 require_once "../lib/myFunctions.php";
 
-$mysqli = connect("localhost","root","","shop");
+$mysqli = connect();
 
-//TO DO validation of input
-$result = getCategories($mysqli);	
+//Rendering menu
+$result = getCategories();	
 echo showCategoriesMenu($result);
 
 

@@ -63,7 +63,7 @@
 			</label>
 			<select name="category">
 				<?php
-					$mysqli = connect("localhost","root","","shop");
+					$mysqli = connect();
 					$result = getCategories($mysqli);
 					while($row = $result->fetch_object()){
 						$category = $row->name;
