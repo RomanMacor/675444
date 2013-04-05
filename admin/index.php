@@ -7,8 +7,11 @@
 
 <body>
 <h1>Welcome to admin pages </h1>
-<a href="manage_orders.php"> Manage orders</a> <br/>
-<a href="report.php"> Manage reports</a>
+<ul>
+	<li> <a href="manage_orders.php"> Manage orders</a> </li>
+	<li> <a href="report.php"> Manage reports</a> </li>
+	<li> <a href="list.php"> List products and manage qauntity</a> </li>
+</ul>
 </body>
 
 </html>

@@ -4,12 +4,14 @@
 <head>
 	<meta charset="utf-8">
 	<title>Manage Orders</title>
-	<link rel="stylesheet" href="../lib/css/styles.css" type="text/css"/>
+	<link rel="stylesheet" href="../css/default2.css" type="text/css"/>
 	<script type="text/javascript" src="../lib/javascript/myFunctions.js"></script>
 </head>
 
-<body>
-	
+<body onload=populateWarningLimit()>
+	<label for=warningLimit> Set a warning if the quantity gets bellow </label>
+	<input type="number" name= "warningLimit" id= "warningLimit" onchange=setWarningLimit() >
+	<div id="warning"> </div>
 <?php
 require_once "../lib/myFunctions.php";
 

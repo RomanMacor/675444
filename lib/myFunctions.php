@@ -50,9 +50,29 @@ function showItems($result){
 					 <th> <a href='list.php?orderBy=category'> Category </a> </th> <th>Description</th> <th>Picture</th></tr>";
 	//data
 	while($row = $result->fetch_object()){
-		$buildHTML .= "<tr> <td> $row->id </td> <td> $row->name </td> <td> $row->quantity </td> <td> $row->price </td> 
+		$buildHTML .= "<tr> <td> $row->id </td> <td> $row->name </td> <td> $row->quantity </td> <td> £$row->price </td> 
 						<td> $row->category </td> <td> $row->description </td> <td>$row->img</td>";
 		$buildHTML .= "<td> <a href='add.php?id=$row->id'> Edit </a> </td> <td> <a href='delete.php?id=$row->id'> Delete </a> </td>";
+		$buildHTML .= " </tr>";
+	}
+	$buildHTML .= "</table>";
+	return $buildHTML;
+}
+/*
+Renders HTML table listing results for admin
+Takes parameter result list
+*/
+function showItemsForAdmin($result){
+	$buildHTML = "<table border ='1' id=productList>";
+	//table header
+	$buildHTML .= "<tr> <th> <a href='list.php?orderBy=id'> ID </a> </th> <th> <a href='list.php?orderBy=name'> Name </a> </th> 
+					<th> <a href='list.php?orderBy=price'> Price </a> </th> <th> <a href='list.php?orderBy=category'> Category </a> </th> 
+					<th>Description</th> <th>Picture</th> <th> <a href='list.php?orderBy=quantity'> Quantity </a> </th> <th> New Quantity </th> </tr> ";
+	//data
+	while($row = $result->fetch_object()){
+		$buildHTML .= "<tr> <td> $row->id </td> <td> $row->name </td> <td> £$row->price </td> 
+						<td> $row->category </td> <td> $row->description </td> <td>$row->img</td> <td id=quantity$row->id> $row->quantity </td>";
+		$buildHTML .= "<td> <input type=number id=newQuantity$row->id </td> <td> <button onclick=changeQuantity($row->id)> Change quantity</button></td>";
 		$buildHTML .= " </tr>";
 	}
 	$buildHTML .= "</table>";
@@ -73,7 +93,7 @@ function showItemsForCustomer($result){
 		// $description = $row->description;
 
 		$buildHTML .= "<li class=product> <a href=detail.php?id=$id> <div> $name </div><img class=itemImage src=../user_img/$row->img alt=$row->name > </a>
-		  				<div> Price: $price £<div/>  <button onclick=\"addToBasket($id)\"> Add to Basket </button>
+		  				<div> Price: £$price <div/>  <button onclick=\"addToBasket($id)\"> Add to Basket </button>
 		  				<input class=itemCount id=$id type=\"number\" value=1 /> </li>";
 	}
 	$buildHTML .= "</ul> </span>";
@@ -190,9 +210,9 @@ function showOrders($result){
 					 	";
 	
 	while($row = $result->fetch_object()){
-		$buildHTML .= "<tr> <td> $row->id </td> <td> $row->item_id </td> <td> $row->quantity </td> <td> $row->ordered_date </td> 
+		$buildHTML .= "<tr id=$row->id> <td> $row->id </td> <td> $row->item_id </td> <td> $row->quantity </td> <td> $row->ordered_date </td> 
 						<td> $row->first_name </td> <td> $row->last_name </td> <td> $row->address </td> <td> $row->email </td>";
-		$buildHTML .= "<td> <a href='distribute.php?id=$row->id'> Mark as distributed </a> </td> ";
+		$buildHTML .= "<td> <button onclick=distribute($row->id)> Mark as Distributed </button> </td> ";
 		$buildHTML .= "</tr>";
 	}
 	$buildHTML .= "</table>";
@@ -231,7 +251,7 @@ function showReport($result){
 //	reduce quantity of product
 // check if quantity is too low
 	
-function process($product_order){
+function process($product_order, $warningLimit){
 	
 	
 	$mysqli = connect();
@@ -240,14 +260,15 @@ function process($product_order){
 	$result = $mysqli->query($query);
 	$item = $result->fetch_object();
 	if ($item === null){
-		return ("Item id: $itemId doesn't exist in the database");
+		return ("<div>Item id: $itemId doesn't exist in the database</div>
+			<a href=../admin/manage_orders.php> Return to managing pages</a>");
 	}
 
 	$currentQuantity =  $item->quantity;
 	
 	// Storing name and id for report warning purpuses
-	$id =  $result->fetch_object()->id;
-	$name = $result->fetch_object()->name;
+	$id =  $item->id;
+	$name = $item->name;
 
 	$newQuantity = $currentQuantity - $product_order->quantity;
 		
@@ -258,10 +279,9 @@ function process($product_order){
 	$mysqli->query($query);
 	$mysqli->close();
 	//return warning if quality is lower than 10
-	// In ideal world this would be constant configurable by admin
-	if($newQuantity < 10){
-		$warning = "The quanity of item $name (id = $id) is less than 10 <br> quantity = $newQuantity 
-					<a href=../admin/manage_orders.php> Return to managing pages</a>"; 
+	if($newQuantity < $warningLimit){
+		$warning = "The quantity of item $name (id = $id) is less than $warningLimit <br> quantity = $newQuantity </br>
+					<a href=../admin/list.php> Please check the stock</a>"; 
 		return $warning;
 	}else{
 		return "";
@@ -313,7 +333,7 @@ function showItemDetail($result){
 
 		$buildHTML = "  <h2> $name </h2>
 						<img id=detailImage class=rightContent src=../user_img/$row->img alt=$row->name >
-		  				<div> Price: $price £<div/>  
+		  				<div> Price: £$price <div/>  
 		  				<div> Description: $description <div/>  
 		  				<button onclick=addToBasket($id)> Add to Basket </button>
 		  				<input class=itemCount id=$id type=number value=1 />";
@@ -321,5 +341,9 @@ function showItemDetail($result){
 	
 	return $buildHTML;
 }
-
+function changeQuantity($id, $quantity){
+	$db = connect();
+	$db->query("UPDATE product SET quantity=$quantity WHERE id=$id");
+	$db->close();	
+}
 ?>

@@ -11,6 +11,6 @@ if (isset($_GET['searchString'])){
 	
 	$result = echoQuery($sqlQuery, "Data retrieved.", $mysqli);
 }
-echo showItems($result);
+echo showItemsForAdmin($result);
 
 ?>
