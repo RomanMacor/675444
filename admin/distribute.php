@@ -1,7 +1,7 @@
 <?php
 require_once "../lib/myFunctions.php";
 
-$mysqli = connect("localhost","root","","shop");
+$mysqli = connect();
 	
 
 if (isset($_POST['id']) && isset($_POST['warningLimit'])){
@@ -12,11 +12,8 @@ if (isset($_POST['id']) && isset($_POST['warningLimit'])){
 	$result = echoQuery($sqlQuery, "Data retrieved.", $mysqli);
 	$product_order = $result->fetch_object();
 	$warning = process($product_order,$warningLimit);
-	if ($warning === ""){
-		header("Location: manage_orders.php");		
-	}else{
-		echo $warning;	
-	}
+
+	echo $warning;	
 	
 }else{
 	echo "id not set";
