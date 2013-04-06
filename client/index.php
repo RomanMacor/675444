@@ -1,6 +1,5 @@
 <?php
 	require_once "../lib/myFunctions.php";
-	$mysqli = connect("localhost","root","","shop");
 ?>
 <!DOCTYPE html>
 <html>
@@ -11,15 +10,23 @@
 </head>
 
 <body>
-	
+	<div class="rightContent">
+		<form method="get" action="" >
+			Search: <input type="search" name="searchString" onkeyup="search(this.value)"/> 
+			<input type="submit" value="search" />
+		</form>
+
+
+		<button id="basketButton" onclick="goToBasket()" >Go to basket</button>
+	</div>	
 <?php
 	//renderig menu
 	$result = getCategories();	
 	echo showCategoriesMenu($result);
 
+	//rendering pictures of categories
 	$result = getCategories($mysqli);	
 	echo showCategoriesPictures($result);
-	//echo showCategoriesMenu($result);
 
 
 ?>

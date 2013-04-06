@@ -1,9 +1,13 @@
 <?php
 require_once "../lib/myFunctions.php";
 
-//TO DO: validation
-$id = $_POST['id'];
-$quantity = $_POST['quantity'];
+$id = filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT);
+$quantity = filter_input(INPUT_POST, "quantity", FILTER_VALIDATE_INT);
+if($id && $quantity){
+	changeQuantity($id, $quantity);	
+}else{
+	echo "Id or Quantity invalid.";
+}
 
-changeQuantity($id, $quantity);
+
 ?>

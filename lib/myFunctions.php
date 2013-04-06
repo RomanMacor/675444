@@ -400,5 +400,41 @@ function createProductOrder($fName, $lName, $address, $email, $id, $quantity, $p
 	$mysqli->query($sqlQuery);
 	$mysqli->close();
 }
+//fetch procducts that has selected category
+function getProductsByCategory($category)
+{
+	$mysqli = connect();
+	$sqlQuery = "SELECT * FROM product WHERE category= '$category'";
+	$result = $mysqli->query($sqlQuery);
+	$mysqli->close();
+	return $result;
+}
+//fetch all products
+function getAllProducts()
+{
+	$mysqli = connect();
+	$sqlQuery = "SELECT * FROM product";
+	$result = $mysqli->query($sqlQuery);
+	$mysqli->close();
+	return $result;
+}
+//fetch producst that encompass the searchString 
+function getProductsBySearchString($searchString)
+{
+	$mysqli = connect();
+	$sqlQuery = "SELECT * FROM product WHERE (name like  '%$searchString%') OR
+				 (description like  '%$searchString%') OR (category like  '%$searchString%')";
+	$result = $mysqli->query($sqlQuery);
+	$mysqli->close();
+	return $result;
+}
+//deletes order with specified id
+function deleteOrder($id)
+{
+	$mysqli = connect();
+	$sqlQuery = "DELETE FROM product_order WHERE id= $id";
+	$mysqli->query($sqlQuery);
+	$mysqli->close();
+}
 
 ?>

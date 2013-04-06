@@ -30,20 +30,26 @@ $result = getCategories();
 echo showCategoriesMenu($result);
 
 
-if (isset($_GET['category'])){
-	
-	$sqlQuery = "SELECT * FROM product WHERE category='". $_GET['category']."'";
-}else{
-	$sqlQuery = "SELECT * FROM product";
+//sanitizing input
+$searchString = filter_input(INPUT_GET, "searchString", FILTER_SANITIZE_STRING);
+
+if ($searchString)
+{
+	//searching in name, category and description columns	
+	$result = getProductsBySearchString($searchString);
+} elseif{
+	//sanitizing input
+	$category = filter_input(INPUT_GET, "category", FILTER_SANITIZE_STRING);
+
+	if ($category)
+	{
+		$result = getProductsByCategory($category);
+	}else
+	{
+		$result = getAllProducts();	
+	}
 }
-//if search is set
-if (isset($_GET['searchString'])){
-	$searchString = $_GET['searchString'];
-	//searching in name and description columns	
-	$sqlQuery = "SELECT * FROM product WHERE (name like  '%$searchString%') OR
-				 (description like  '%$searchString%') OR (category like  '%$searchString%')";
-}
-$result = echoQuery($sqlQuery, "Data retrieved.", $mysqli);
+
 echo showItemsForCustomer($result);
 
 ?>

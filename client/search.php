@@ -1,16 +1,12 @@
 <?php
 require_once "../lib/myFunctions.php";
 
-$mysqli = connect("localhost","root","","shop");
+$searchString = filter_input(INPUT_GET, "searchString", FILTER_SANITIZE_STRING);
 
-if (isset($_GET['searchString'])){
-	$searchString = $_GET['searchString'];
+if ($searchString)
+{
 	//searching in name and description columns	
-	$sqlQuery = "SELECT * FROM product WHERE (name like  '%$searchString%') OR
-				 (description like  '%$searchString%') OR (category like  '%$searchString%')";
-	
-	$result = echoQuery($sqlQuery, "Data retrieved.", $mysqli);
+	$result = getProductsBySearchString($searchString);
 }
 echo showItemsForCustomer($result);
-
 ?>

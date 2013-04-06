@@ -24,9 +24,16 @@ $result = getCategories();
 echo showCategoriesMenu($result);
 
 //TODO: validation
-$id = $_GET["id"];
-$result = getItemById($id);
-echo showItemDetail($result);
+$id = (filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+if($id)
+{
+	$result = getItemById($id);
+	echo showItemDetail($result);	
+}else
+{
+	echo "invalid id.";
+}
+
 ?>
 </body>
 

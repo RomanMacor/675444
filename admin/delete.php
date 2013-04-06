@@ -1,10 +1,14 @@
 <?php
 	require_once "../lib/myFunctions.php";
-	$mysqli = connect("localhost","root","","shop");
 	
-	$id = $_GET['id'];
-	$query = "DELETE FROM product_order WHERE id= $id";
-	$mysqli->query($query);
-	$mysqli->close();
-	header("Location: report.php");
+	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	
+	if($id)
+	{
+		deleteOrder($id);
+		header("Location: report.php");	
+	}else{
+		echo "Invalid id.";
+	}
+	
 ?>
