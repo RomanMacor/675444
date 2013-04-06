@@ -23,10 +23,12 @@ if($_GET["basketString"] == "null" ){
 	echo "<b> Basket is Empty  </b< <br>";
 	//echo '<a href="list.php"> Back to the shoping</a>';
 }else{
+
+	//Sanitazing input, getting rid of html escape characters, keeping the quotes
+	$basket = (filter_input(INPUT_GET, "basketString", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
 	
-	$basket = $_GET["basketString"];
 	$sum = showBasketItems($basket);
-//	$sum = 5010;
+
 }
 ?>
 <button id="displayFormButton" onclick="displayCustomerForm()">Put down delivery details and buy</button>

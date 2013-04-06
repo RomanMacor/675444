@@ -5,7 +5,7 @@ require_once "../lib/myFunctions.php";
 
 $categoryName = filter_input(INPUT_POST, 'categoryName', FILTER_SANITIZE_STRING);
 
-//TODO: validation is neccesery here
+//validation
 //SAVING FILE
 
 

@@ -1,40 +1,38 @@
 
 <?php
-// TODO, all the logic ()
+
 require_once "../lib/myFunctions.php";
 
-echo "Thank you for shoping with us today. <br/>";
-echo "Your order has been processed. <br/>";
-echo '<a href="list.php"> Back to the shoping</a>';
-
-
-//TODO: validation
-$fName = $_POST['fName'];
-$lName = $_POST['lName'];
-$address = $_POST['town'].", ";
-$address .= $_POST['street'].", ";
-$address .= $_POST['post'];
-$email = $_POST['email'];
+// sanitizing the input
+$fName = filter_input(INPUT_POST, "fName", FILTER_SANITIZE_STRING);
+$lName = filter_input(INPUT_POST, "lName", FILTER_SANITIZE_STRING);
+$address = filter_input(INPUT_POST, "town", FILTER_SANITIZE_STRING).", ";
+$address .= filter_input(INPUT_POST, "street", FILTER_SANITIZE_STRING).", ";
+$address .= filter_input(INPUT_POST, "post", FILTER_SANITIZE_STRING);
+$email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
 $sum = $_POST['sum'];
-$basketObj = json_decode($_POST['basketString']);
 
-$mysqli = connect("localhost","root","","shop");
+$basketString = filter_input(INPUT_POST, "basketString", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+$basketObj = json_decode($basketString);
 
-foreach ($basketObj as $obj){
-	//get sum
-	//$sqlQuery = "SELECT price FROM product WHERE id=$obj->id";
-	//$result =	echoQuery($sqlQuery, "Data inserted.", $mysqli);
-	//$item = $result->fetch_object();
-	//$sum = $item->price * $obj->quantity;
-	$sqlQuery = "INSERT INTO product_order (first_name, last_name, address, email, item_id,
-	 quantity, ordered_date, processed, sum) VALUES 
-		('$fName', '$lName', '$address', '$email', $obj->id, $obj->quantity, CURDATE(), false, $sum)";
-	echoQuery($sqlQuery, "Data inserted.", $mysqli);
+//validating email
+if (filter_var($email, FILTER_VALIDATE_EMAIL))
+{
+	
+	foreach ($basketObj as $obj)
+	{
+		createProductOrder($fName, $lName, $address, $email, $obj->id, $obj->quantity, 'false', $sum);		
+	}
+
+	echo "Thank you for shoping with us today. <br/>";
+	echo "Your order has been processed. <br/>";
+	echo '<a href="list.php"> Back to the shoping</a>';
+
+}else
+{
+	echo "Invalid email. Please click return button on the browser or follow the link back to basket";
+	echo "<a href=basket.php?basketString=$basketString> Basket</a>";
 }
-// $sqlQuery = "INSERT INTO product (name, quantity, price, category, description) VALUES 
-// 	('iphone', 25, 500, 'Phones', 'For cool people')";
-
-$mysqli->close();
 
 
 ?>
