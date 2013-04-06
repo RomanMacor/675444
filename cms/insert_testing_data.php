@@ -26,37 +26,24 @@ $sqlQuery = "INSERT INTO category (name, img) VALUES ('Headphones','headphones.j
 echoQuery($sqlQuery, "Data inserted.", $mysqli);
 
 
-//TODO: Also insert product orders
-$sqlQuery = "INSERT INTO product_order (first_name, last_name, address, email, item_id, quantity, ordered_date, processed) VALUES
-			 ('John', 'Smith', 'London, 356', 'john@gmail.com', 1, 3, '2013-03-30', false)";
+//insert product orders
+$sqlQuery = "INSERT INTO product_order (first_name, last_name, address, email, item_id, quantity, ordered_date, processed, sum) VALUES
+			 ('John', 'Smith', 'London, 356', 'john@gmail.com', 1, 3, '2013-03-30', false, 1500)";
 echoQuery($sqlQuery, "Data inserted.", $mysqli);
 
-$sqlQuery = "INSERT INTO product_order (first_name, last_name, address, email, item_id, quantity, ordered_date, processed) VALUES
-			 ('John', 'Smith', 'London, 356', 'john@gmail.com', 2, 4, '2013-03-30', false)";
-echoQuery($sqlQuery, "Data inserted.", $mysqli);
-
-$sqlQuery = "INSERT INTO product_order (first_name, last_name, address, email, item_id, 
-				quantity, ordered_date, processed, processed_date) VALUES
-			 ('John', 'Smith', 'London, 356', 'john@gmail.com', 3, 3, '2013-03-22', true, '2013-03-23')";
+$sqlQuery = "INSERT INTO product_order (first_name, last_name, address, email, item_id, quantity, ordered_date, processed, sum) VALUES
+			 ('John', 'Smith', 'London, 356', 'john@gmail.com', 2, 4, '2013-03-30', false, 1200)";
 echoQuery($sqlQuery, "Data inserted.", $mysqli);
 
 $sqlQuery = "INSERT INTO product_order (first_name, last_name, address, email, item_id, 
-				quantity, ordered_date, processed, processed_date) VALUES
-			 ('John', 'Smith', 'London, 356', 'john@gmail.com', 1, 3, '2013-03-22', true, '2013-04-30')";
+				quantity, ordered_date, processed, processed_date, sum) VALUES
+			 ('John', 'Smith', 'London, 356', 'john@gmail.com', 3, 3, '2013-03-22', true, '2013-03-23', 750)";
 echoQuery($sqlQuery, "Data inserted.", $mysqli);
 
-$sqlQuery = "CREATE TABLE IF NOT EXISTS product_order(
-	id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	first_name varchar(25),
-	last_name varchar(25),
-	address varchar(100),
-	email varchar(35),
-	item_id INT(6),
-	quantity INT(10),
-	ordered_date DATE,
-	processed boolean,
-	processed_date DATE
-	)";
+$sqlQuery = "INSERT INTO product_order (first_name, last_name, address, email, item_id, 
+				quantity, ordered_date, processed, processed_date, sum) VALUES
+			 ('John', 'Smith', 'London, 356', 'john@gmail.com', 1, 3, '2013-03-22', true, '2013-04-30', 1500)";
+echoQuery($sqlQuery, "Data inserted.", $mysqli);
 
 
 echo "The data has been succesfully inserted. </br>"; 

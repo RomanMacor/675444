@@ -38,7 +38,8 @@ $sqlQuery = "CREATE TABLE IF NOT EXISTS product_order(
 	quantity INT(10),
 	ordered_date DATE,
 	processed boolean,
-	processed_date DATE
+	processed_date DATE,
+	sum INT(10)
 	)";
 
 echoQuery($sqlQuery, "Table product was successfully created.",$mysqli);

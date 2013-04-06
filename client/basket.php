@@ -25,7 +25,8 @@ if($_GET["basketString"] == "null" ){
 }else{
 	
 	$basket = $_GET["basketString"];
-	showBasketItems($basket);
+	$sum = showBasketItems($basket);
+//	$sum = 5010;
 }
 ?>
 <button id="displayFormButton" onclick="displayCustomerForm()">Put down delivery details and buy</button>
@@ -41,6 +42,7 @@ if($_GET["basketString"] == "null" ){
 	Email: <input type="email" name="email" required/> <br/>
 	<input type="hidden" id="basketString" name="basketString" /> 
 	<input onclick="checkout('basketString')" type="submit" value="Buy" />
+    <input type=hidden name=sum value=<?php echo $sum?>>
 
 </form>
 

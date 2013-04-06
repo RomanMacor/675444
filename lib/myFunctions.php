@@ -153,7 +153,7 @@ function showCategoriesPictures($caregories){
 		return $buildHTML;
 	}
 }
-//Renders basket items
+//Renders basket items, returns total
 
 function showBasketItems($basketString){
 	$mysqli = connect("localhost","root","","shop");
@@ -190,6 +190,7 @@ function showBasketItems($basketString){
 		echo "<p>Total is $total £</p>";
 		
 		$mysqli->close();	
+		return $total;
 }
 	
 /*
@@ -234,16 +235,19 @@ function showReport($result){
 					 	<th> <a href='report.php?orderBy=last_name'> Customer Last Name </a> </th>
 					 	<th> <a href='report.php?orderBy=address'> Address </a> </th>
 					 	<th> <a href='report.php?orderBy=email'> Email </a> </th>			 	
-					 	";
-	
+					 	<th> <a href='report.php?orderBy=sum'> Sum </a> </th>			 	
+					 	</tr>";
+	$total = 0;
 	while($row = $result->fetch_object()){
+		$total += $row->sum;
 		$buildHTML .= "<tr> <td> $row->id </td> <td> $row->item_id </td> <td> $row->quantity </td> <td> $row->ordered_date </td> 
 							<td> $row->processed_date </td> 
-						<td> $row->first_name </td> <td> $row->last_name </td> <td> $row->address </td> <td> $row->email </td>";
+						<td> $row->first_name </td> <td> $row->last_name </td> <td> $row->address </td> <td> $row->email </td> <td> £$row->sum </td>";
 		$buildHTML .= "<td> <a href='delete.php?id=$row->id'> Delete Record </a> </td> ";
 		$buildHTML .= "</tr>";
 	}
 	$buildHTML .= "</table>";
+	$buildHTML .= "<div> Total profit = £$total </div>";
 	return $buildHTML;	
 }
 
