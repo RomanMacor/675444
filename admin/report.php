@@ -22,11 +22,10 @@
 
 <?php
 require_once "../lib/myFunctions.php";
-
-$mysqli = connect("localhost","root","","shop");
 	
 // over a set of time
-if (isset($_GET['limit'])){
+if (isset($_GET['limit']))
+{
 	$limit = $_GET['limit'];
 	switch ($limit) {
 		case 'week':
@@ -43,16 +42,18 @@ if (isset($_GET['limit'])){
 			$limit = "";
 			break;
 	}
-}else{
+}else
+{
 	$limit = "";
 }
+$orderBy = filter_input(INPUT_GET, "orderBy", FILTER_SANITIZE_STRING);	
 
-if (isset($_GET['orderBy'])){
-	$sqlQuery = "SELECT * FROM product_order WHERE processed=true ORDER BY ". $_GET['orderBy']. $limit;	
-	$result = echoQuery($sqlQuery, "Data retrieved.", $mysqli);
-}else{
-	$sqlQuery = "SELECT * FROM product_order WHERE processed=true". $limit;
-	$result = echoQuery($sqlQuery, "Data retrieved.", $mysqli);
+if ($orderBy)
+{
+	$result = getAllReports($limit, $orderBy);
+}else
+{
+	$result = getAllReports($limit);
 }
 
 echo showReport($result);

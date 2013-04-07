@@ -1,22 +1,20 @@
 <?php
 require_once "../lib/myFunctions.php";
 
-$mysqli = connect();
+//validating input
+$warningLimit = filter_input(INPUT_POST, "warningLimit", FILTER_VALIDATE_INT);	
+$id = filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT);
+
+if ($id && $warningLimit){
 	
-
-if (isset($_POST['id']) && isset($_POST['warningLimit'])){
-	$id = $_POST['id'];
-	$warningLimit = $_POST['warningLimit'];
-
-	$sqlQuery = "SELECT * FROM product_order WHERE id=$id";	
-	$result = echoQuery($sqlQuery, "Data retrieved.", $mysqli);
-	$product_order = $result->fetch_object();
+	$product_order = getOrderById($id)->fetch_object();
+	
 	$warning = process($product_order,$warningLimit);
 
 	echo $warning;	
 	
 }else{
-	echo "id not set";
+	echo "Invalid id or warningLimit.";
 }
 
 ?>

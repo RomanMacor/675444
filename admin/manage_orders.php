@@ -15,15 +15,15 @@
 <?php
 require_once "../lib/myFunctions.php";
 
-$mysqli = connect("localhost","root","","shop");
-	
+$orderBy = filter_input(INPUT_GET, "orderBy", FILTER_SANITIZE_STRING);	
 
-if (isset($_GET['orderBy'])){
-	$sqlQuery = "SELECT * FROM product_order WHERE processed=false ORDER BY ". $_GET['orderBy'];	
-	$result = echoQuery($sqlQuery, "Data retrieved.", $mysqli);
-}else{
-	$sqlQuery = "SELECT * FROM product_order WHERE processed=false";
-	$result = echoQuery($sqlQuery, "Data retrieved.", $mysqli);
+if ($orderBy)
+{
+	$result = getAllOrders($orderBy);
+
+}else
+{
+	$result = getAllOrders();
 }
 
 echo showOrders($result);

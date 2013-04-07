@@ -409,21 +409,35 @@ function getProductsByCategory($category)
 	$mysqli->close();
 	return $result;
 }
-//fetch all products
-function getAllProducts()
+//fetch all products, if order by parameter is set, the result is ordered by this parameter
+function getAllProducts($orderBy = "")
 {
 	$mysqli = connect();
-	$sqlQuery = "SELECT * FROM product";
+	if($orderBy === "")
+	{
+		$sqlQuery = "SELECT * FROM product";
+	}else{
+		$sqlQuery = "SELECT * FROM product ORDER BY $orderBy";
+	}
+	
 	$result = $mysqli->query($sqlQuery);
 	$mysqli->close();
 	return $result;
 }
-//fetch producst that encompass the searchString 
-function getProductsBySearchString($searchString)
+//fetch producst that encompass the searchString , has search in id (bool) flag
+function getProductsBySearchString($searchString, $searchInId = false)
 {
 	$mysqli = connect();
-	$sqlQuery = "SELECT * FROM product WHERE (name like  '%$searchString%') OR
-				 (description like  '%$searchString%') OR (category like  '%$searchString%')";
+	if($searchInId)
+	{
+		$sqlQuery = "SELECT * FROM product WHERE (name like  '%$searchString%') OR
+				 (description like  '%$searchString%') OR (category like  '%$searchString%') OR (id like  '%$searchString%')";	
+	}else
+	{
+		$sqlQuery = "SELECT * FROM product WHERE (name like  '%$searchString%') OR
+				 (description like  '%$searchString%') OR (category like  '%$searchString%')";	
+	}
+	
 	$result = $mysqli->query($sqlQuery);
 	$mysqli->close();
 	return $result;
@@ -436,5 +450,41 @@ function deleteOrder($id)
 	$mysqli->query($sqlQuery);
 	$mysqli->close();
 }
+//fetches order with specified id
+function getOrderById($id){
 
+	$mysqli = connect();
+	$sqlQuery = "SELECT * FROM product_order WHERE id=$id";	
+	$result = $mysqli->query($sqlQuery);
+	$mysqli->close();
+	return $result;
+}
+function getAllOrders($orderBy = "")
+{
+	$mysqli = connect();
+	if($orderBy === "")
+	{
+		$sqlQuery = "SELECT * FROM product_order WHERE processed=false";
+	}else{
+		$sqlQuery = "SELECT * FROM product_order WHERE processed=false ORDER BY $orderBy";
+	}
+
+	$result = $mysqli->query($sqlQuery);
+	$mysqli->close();
+	return $result;
+}
+function getAllReports($limit, $orderBy = "")
+{
+	$mysqli = connect();
+	if($orderBy === "")
+	{
+		$sqlQuery = "SELECT * FROM product_order WHERE processed=true". $limit;
+	}else{
+		$sqlQuery = "SELECT * FROM product_order WHERE processed=true".$limit. " ORDER BY $orderBy";
+	}
+
+	$result = $mysqli->query($sqlQuery);
+	$mysqli->close();
+	return $result;
+}
 ?>
