@@ -1,25 +1,8 @@
 <?php
 require_once "../lib/myFunctions.php";
 
-//test if database and table exist
-$mysqli = connect("localhost","root","","");
-
-if($mysqli->query("USE shop")){
-	$result = $mysqli->query("show tables like 'product'");
-	
-	if($result->num_rows > 0){ 
-		echo "Database is ready. <br/>";
-	} else{
-		echo "Database hase been created.";
-		//creating database;
-		include('databaseini.php');
-	}
-}else{
-	echo "Database hase been created.";
-	//creating database;
-	include('databaseini.php');
-	
-}
+//test if database and table exist, if not, it creates it
+prepareDatabase();
 
 ?>
 <!DOCTYPE html>

@@ -1,10 +1,8 @@
 <?php
 	require_once "../lib/myFunctions.php";
-	$mysqli = connect("localhost","root","","shop");
+	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+
+	deteleProduct($id);
 	
-	$id = $_GET['id'];
-	$query = "DELETE FROM product WHERE id= $id";
-	$mysqli->query($query);
-	$mysqli->close();
 	header("Location: list.php");
 ?>

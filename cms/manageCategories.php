@@ -16,16 +16,15 @@
 
 <?php
 require_once "../lib/myFunctions.php";
-$mysqli = connect("localhost","root","","shop");
 
-if (isset($_GET['orderBy'])){
-	
-	$sqlQuery = "SELECT * FROM category ORDER BY ". $_GET['orderBy'];
-	$result = echoQuery($sqlQuery, "Data retrieved.", $mysqli);
-}else{
+$orderBy = filter_input(INPUT_GET, "orderBy", FILTER_SANITIZE_STRING);
 
-	$sqlQuery = "SELECT * FROM category";
-	$result = echoQuery($sqlQuery, "Data retrieved.", $mysqli);
+if ($orderBy)
+{
+	$result = getCategories($orderBy);
+}else
+{
+		$result = getCategories();
 }
 echo showCategories($result);
 ?>

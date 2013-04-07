@@ -34,19 +34,14 @@ function echoQuery($query, $successString, $db)
 	}
 }
 // Fetches the product with specified ID
-function getItemById($id)
+function getProductById($id)
 {
 	$db = connect("localhost","root","","shop");
 	$result = $db->query("SELECT * FROM product WHERE id=$id");
 	$db->close();
 	return $result;
 }
-//Fetches all category
-function getCategories()
-{
-	$db = connect();
-	return $db->query("SELECT * FROM category");
-}
+
 /*
 Renders HTML table listing results for cms
 Takes parameter result list
@@ -61,7 +56,7 @@ function showItems($result)
 	//data
 	while($row = $result->fetch_object())
 	{
-		$buildHTML .= "<tr> <td> $row->id </td> <td> $row->name </td> <td> $row->quantity </td> <td> £$row->price </td> 
+		$buildHTML .= "<tr> <td> $row->id </td> <td> $row->name </td> <td> $row->quantity </td> <td> &pound$row->price </td> 
 						<td> $row->category </td> <td> $row->description </td> <td>$row->img</td>";
 		$buildHTML .= "<td> <a href='add.php?id=$row->id'> Edit </a> </td> <td> <a href='delete.php?id=$row->id'> Delete </a> </td>";
 		$buildHTML .= " </tr>";
@@ -83,7 +78,7 @@ function showItemsForAdmin($result)
 	//data
 	while($row = $result->fetch_object())
 	{
-		$buildHTML .= "<tr> <td> $row->id </td> <td> $row->name </td> <td> £$row->price </td> 
+		$buildHTML .= "<tr> <td> $row->id </td> <td> $row->name </td> <td> &pound$row->price </td> 
 						<td> $row->category </td> <td> $row->description </td> <td>$row->img</td> <td id=quantity$row->id> $row->quantity </td>";
 		$buildHTML .= "<td> <input type=number id=newQuantity$row->id </td> <td> <button onclick=changeQuantity($row->id)> Change quantity</button></td>";
 		$buildHTML .= " </tr>";
@@ -108,7 +103,7 @@ function showItemsForCustomer($result)
 		// $description = $row->description;
 
 		$buildHTML .= "<li class=product> <a href=detail.php?id=$id> <div> $name </div><img class=itemImage src=../user_img/$row->img alt=$row->name > </a>
-		  				<div> Price: £$price <div/>  <button onclick=\"addToBasket($id)\"> Add to Basket </button>
+		  				<div> Price: &pound$price <div/>  <button onclick=\"addToBasket($id)\"> Add to Basket </button>
 		  				<input class=itemCount id=$id type=\"number\" value=1 /> </li>";
 	}
 	$buildHTML .= "</ul> </span>";
@@ -212,7 +207,7 @@ function showBasketItems($basketString)
 	}
 		$table .="</table>";
 		echo $table;
-		echo "<p>Total is $total £</p>";
+		echo "<p>Total is $total &pound</p>";
 		
 		$mysqli->close();	
 		return $total;
@@ -271,12 +266,12 @@ function showReport($result)
 		$total += $row->sum;
 		$buildHTML .= "<tr> <td> $row->id </td> <td> $row->item_id </td> <td> $row->quantity </td> <td> $row->ordered_date </td> 
 							<td> $row->processed_date </td> 
-						<td> $row->first_name </td> <td> $row->last_name </td> <td> $row->address </td> <td> $row->email </td> <td> £$row->sum </td>";
+						<td> $row->first_name </td> <td> $row->last_name </td> <td> $row->address </td> <td> $row->email </td> <td> &pound$row->sum </td>";
 		$buildHTML .= "<td> <a href='delete.php?id=$row->id'> Delete Record </a> </td> ";
 		$buildHTML .= "</tr>";
 	}
 	$buildHTML .= "</table>";
-	$buildHTML .= "<div> Total profit = £$total </div>";
+	$buildHTML .= "<div> Total profit = &pound$total </div>";
 	return $buildHTML;	
 }
 
@@ -375,7 +370,7 @@ function showItemDetail($result)
 
 		$buildHTML = "  <h2> $name </h2>
 						<img id=detailImage class=rightContent src=../user_img/$row->img alt=$row->name >
-		  				<div> Price: £$price <div/>  
+		  				<div> Price: &pound$price <div/>  
 		  				<div> Description: $description <div/>  
 		  				<button onclick=addToBasket($id)> Add to Basket </button>
 		  				<input class=itemCount id=$id type=number value=1 />";
@@ -400,6 +395,14 @@ function createProductOrder($fName, $lName, $address, $email, $id, $quantity, $p
 	$mysqli->query($sqlQuery);
 	$mysqli->close();
 }
+//Insert category into database
+function createcategory($categoryName, $imgName)
+{
+	$mysqli = connect();
+	$sqlQuery = ("INSERT INTO category (name, img) VALUES ('$categoryName','$imgName')");
+	$mysqli->query($sqlQuery);
+	$mysqli->close();
+}
 //fetch procducts that has selected category
 function getProductsByCategory($category)
 {
@@ -418,6 +421,21 @@ function getAllProducts($orderBy = "")
 		$sqlQuery = "SELECT * FROM product";
 	}else{
 		$sqlQuery = "SELECT * FROM product ORDER BY $orderBy";
+	}
+	
+	$result = $mysqli->query($sqlQuery);
+	$mysqli->close();
+	return $result;
+}
+//Fetches all category if order by attribute is set, the result is ordered by this attribute
+function getCategories($orderBy = "")
+{
+	$mysqli = connect();
+	if($orderBy === "")
+	{
+		$sqlQuery = "SELECT * FROM category";
+	}else{
+		$sqlQuery = "SELECT * FROM category ORDER BY $orderBy";
 	}
 	
 	$result = $mysqli->query($sqlQuery);
@@ -450,6 +468,23 @@ function deleteOrder($id)
 	$mysqli->query($sqlQuery);
 	$mysqli->close();
 }
+//deletes product with specified id
+function deleteProduct($id)
+{
+	$mysqli = connect();
+	$sqlQuery = "DELETE FROM product WHERE id= $id";
+	$mysqli->query($sqlQuery);
+	$mysqli->close();
+}
+//deletes category with specified id
+function deleteCategory($id)
+{
+	$mysqli = connect();
+	$sqlQuery = "DELETE FROM category WHERE id= $id";
+	$mysqli->query($sqlQuery);
+	$mysqli->close();
+}
+
 //fetches order with specified id
 function getOrderById($id){
 
@@ -486,5 +521,57 @@ function getAllReports($limit, $orderBy = "")
 	$result = $mysqli->query($sqlQuery);
 	$mysqli->close();
 	return $result;
+}
+//Update product in database
+function editProduct($id, $name, $quantity, $price, $category, $description, $imgName)
+{
+	$mysqli = connect();
+	//using sprintf to mix it up
+	$sqlQuery = sprintf("UPDATE product SET name='%s', quantity='%s', price='%s', category='%s', description='%s', img='%s'
+					WHERE id='%s'", 
+					$name, $quantity, $price, $category, $description, $imgName, $_GET['id']);
+	$mysqli->query($sqlQuery);
+	$mysqli->close();
+}
+//Create product in database
+function createProduct($name, $quantity, $price, $category, $description, $imgName)
+{	
+	$mysqli = connect();
+	//using sprintf to mix it up
+	$sqlQuery = sprintf("INSERT INTO product (name, quantity, price, category, description, img) 
+					VALUES ('%s', '%s', '%s', '%s', '%s', '%s')", 
+					$name, $quantity, $price, $category, $description, $imgName);
+	$mysqli->query($sqlQuery);
+	$mysqli->close();
+}
+function dropDatabase()
+{
+	$mysqli = connect();
+
+	$sqlQuery = "DROP DATABASE shop";
+	$mysqli->query($sqlQuery);
+	$mysqli->close();	
+}
+function prepareDatabase()
+{
+	$mysqli = connect("localhost","root","","");
+
+	if($mysqli->query("USE shop")){
+		$result = $mysqli->query("show tables like 'product'");
+		
+		if($result->num_rows > 0){ 
+			//echo "Database is ready. <br/>";
+		} else{
+			echo "Database hase been created.";
+			//creating database;
+			include('databaseini.php');
+		}
+	}else{
+		echo "Database hase been created.";
+		//creating database;
+	include('databaseini.php');
+	
+}
+
 }
 ?>

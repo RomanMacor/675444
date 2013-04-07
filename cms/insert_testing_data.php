@@ -2,7 +2,7 @@
 require_once "../lib/myFunctions.php";
 
 //Connecting to server
-$mysqli = connect("localhost","root","","shop");
+$mysqli = connect();
 //Creating database
 
 //inserting some data

@@ -2,7 +2,8 @@
 require_once "../lib/myFunctions.php";
 
 //Validation of input
-$quantity = filter_input(INPUT_POST, 'quantity', FILTER_VALIDATE_INT, array('options'=>array('min_range'=>1)));
+
+$quantity = filter_input(INPUT_POST, 'quantity', FILTER_VALIDATE_INT, array('options'=>array('min_range'=>0)));
 $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_INT, array('options'=>array('min_range'=>0)));
 $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
 $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
@@ -28,20 +29,18 @@ if(isset($_POST["setPicture"]) && $_POST["setPicture"] != ""){
 if(!$quantity) $quantity = 0;
 if(!$price) $price = 0;
 //Connecting to server and iserting data ONLY if valid input
-if($name && $category && $imgName){
-	$mysqli = connect("localhost","root","","shop");
 
-	if(isset($_GET['id'])){
-		$sqlQuery = sprintf("UPDATE product SET name='%s', quantity='%s', price='%s', category='%s', description='%s', img='%s'
-					WHERE id='%s'", 
-					$name, $quantity, $price, $category, $description, $imgName, $_GET['id']);
-		}else{
-			$sqlQuery = sprintf("INSERT INTO product (name, quantity, price, category, description, img) 
-					VALUES ('%s', '%s', '%s', '%s', '%s', '%s')", 
-					$name, $quantity, $price, $category, $description, $imgName);
-			}	
-
-	echoQuery($sqlQuery, "Data inserted.", $mysqli);
+if($name && $category && $imgName)
+{
+	$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+	
+	if($id)
+	{
+		editProduct($id, $name, $quantity, $price, $category, $description, $imgName);
+	}else
+	{
+		createProduct($name, $quantity, $price, $category, $description, $imgName);
+	}	
 	header("Location: list.php");
 }else{
 	echo "Invalid input, data could not be inserted.";

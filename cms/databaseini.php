@@ -2,11 +2,12 @@
 require_once "../lib/myFunctions.php";
 
 //Connecting to server
-$mysqli = connect("localhost","root","","");
+$mysqli = connect();
 //Creating database
-echoQuery("CREATE DATABASE IF NOT EXISTS shop","Database was successfully created or connected to.",$mysqli);
+$mysqli->query("CREATE DATABASE IF NOT EXISTS shop");
 
-echoQuery("USE shop","Database selected.",$mysqli);
+//selecting database
+$mysqli->query("USE shop");
 
 $sqlQuery = "CREATE TABLE IF NOT EXISTS product(
 	id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -18,7 +19,7 @@ $sqlQuery = "CREATE TABLE IF NOT EXISTS product(
 	img varchar(35)
 	)";
 
-echoQuery($sqlQuery, "Table product was successfully created.",$mysqli);
+$mysqli->query($sqlQuery);
 
 $sqlQuery = "CREATE TABLE IF NOT EXISTS category(
 	id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -26,7 +27,7 @@ $sqlQuery = "CREATE TABLE IF NOT EXISTS category(
 	img varchar(35)
 	)";
 
-echoQuery($sqlQuery, "Table category was successfully created.",$mysqli);
+$mysqli->query($sqlQuery);
 
 $sqlQuery = "CREATE TABLE IF NOT EXISTS product_order(
 	id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -42,6 +43,6 @@ $sqlQuery = "CREATE TABLE IF NOT EXISTS product_order(
 	sum INT(10)
 	)";
 
-echoQuery($sqlQuery, "Table product was successfully created.",$mysqli);
+$mysqli->query($sqlQuery);
 
 ?>

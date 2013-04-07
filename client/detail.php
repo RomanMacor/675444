@@ -23,11 +23,11 @@ require_once "../lib/myFunctions.php";
 $result = getCategories();	
 echo showCategoriesMenu($result);
 
-//TODO: validation
+//validation
 $id = (filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 if($id)
 {
-	$result = getItemById($id);
+	$result = getProductById($id);
 	echo showItemDetail($result);	
 }else
 {

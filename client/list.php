@@ -23,8 +23,6 @@
 <?php
 require_once "../lib/myFunctions.php";
 
-$mysqli = connect();
-
 //Rendering menu
 $result = getCategories();	
 echo showCategoriesMenu($result);
@@ -32,23 +30,21 @@ echo showCategoriesMenu($result);
 
 //sanitizing input
 $searchString = filter_input(INPUT_GET, "searchString", FILTER_SANITIZE_STRING);
+//sanitizing input
+$category = filter_input(INPUT_GET, "category", FILTER_SANITIZE_STRING);
 
 if ($searchString)
 {
 	//searching in name, category and description columns	
 	$result = getProductsBySearchString($searchString);
-} elseif{
-	//sanitizing input
-	$category = filter_input(INPUT_GET, "category", FILTER_SANITIZE_STRING);
-
-	if ($category)
-	{
-		$result = getProductsByCategory($category);
-	}else
-	{
-		$result = getAllProducts();	
-	}
+} elseif($category)
+{
+	$result = getProductsByCategory($category);
+}else
+{
+	$result = getAllProducts();	
 }
+
 
 echo showItemsForCustomer($result);
 

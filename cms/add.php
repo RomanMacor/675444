@@ -12,12 +12,11 @@
 	
 
 	//ID is selected in case of editing
-	if(isset($_GET['id'])){
-		$mysqli = connect("localhost","root","","shop");
-		
-		$selectedId= $_GET['id'];
-		$query = "SELECT * FROM product WHERE id=$selectedId";
-		$result = $mysqli->query($query);
+	$selectedId = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	
+	if($selectedId){
+		$result = getProductById($selectedId);
+	
 		if($result){
 			$row = $result ->fetch_assoc();
 			$selectedName=$row['name'];
@@ -26,11 +25,7 @@
 			$selectedCategory=$row['category'];
 			$selectedDescription=$row['description'];
 			$selectedPicture=$row['img'];
-		}else{
-			echo "QUERY NOT SUCCESFUL:".$query;
 		}
-		$mysqli->close();
-		
 	}
 ?>
 <html>
@@ -40,7 +35,7 @@
 </head>
 
 <body>
-	<form  method="post" action= <?php echo isset($_GET['id']) ? "added.php?id=$selectedId" : "added.php"; ?> 
+	<form  method="post" action= <?php echo ($selectedId ? "added.php?id=$selectedId" : "added.php"); ?> 
 			enctype="multipart/form-data">
 		<div>
 			<label for="name"> Name: 
@@ -50,12 +45,12 @@
 		<div>
 			<label for ="quantity"> Quantity:
 			</label>
-			<input type ="number" size="6" name="quantity" required pattern="\d+"  value=<?php echo isset($_GET['id']) ? $selectedQuantity : "1"; ?>>
+			<input type ="number" size="6" name="quantity" required pattern="\d+"  value=<?php echo ($selectedId ? $selectedQuantity : "1"); ?>>
 		</div>
 		<div>
 			<label for ="price"> Price:
 			</label>
-			<input type ="number" size="6" name="price" min="0" required pattern="\d+"  value=<?php echo isset($_GET['id']) ? $selectedPrice : "0"; ?>>
+			<input type ="number" size="6" name="price" min="0" required pattern="\d+"  value=<?php echo ($selectedId ? $selectedPrice : "0"); ?>>
 		</div>
 		
 		<div>
@@ -63,8 +58,8 @@
 			</label>
 			<select name="category">
 				<?php
-					$mysqli = connect();
-					$result = getCategories($mysqli);
+
+					$result = getCategories();
 					while($row = $result->fetch_object()){
 						$category = $row->name;
 						//for editing 
@@ -88,19 +83,17 @@
 			</textarea>
 		</div>			
 		<div>
-			<label for ="Picture">  <?php echo isset($_GET['id']) ? "Selected picture is: ". $selectedPicture : "Picture:"; ?>
+			<label for ="Picture">  <?php echo ($selectedId ? "Selected picture is: ". $selectedPicture : "Picture:"); ?>
 			</label>
 		
 			<input type="file" name="picture" id="picture" accept="image/*">
 			<input type="hidden" name="setPicture" value=<?php echo $selectedPicture; ?>>
 		</div>
 		<div>
-			<input type="submit" value=<?php echo isset($_GET['id']) ? "Edit" : "Add"; ?> >
+			<input type="submit" value=<?php echo ($selectedId ? "Edit" : "Add"); ?> >
 			<input type="reset" value="Clear">
 		</div>
  	</form>
 </body>
-<!-- quantity INT(10),
-	category varchar(25),
-	description -->
+
 </html>
