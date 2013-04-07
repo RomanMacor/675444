@@ -24,7 +24,7 @@ $result = getCategories();
 echo showCategoriesMenu($result);
 
 //validation
-$id = (filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 if($id)
 {
 	$result = getProductById($id);

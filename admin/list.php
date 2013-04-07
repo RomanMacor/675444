@@ -35,7 +35,6 @@ if ($searchString)
 
 echo showItemsForAdmin($result);
 
-echo '<a href="add.php"> Add a product </a>';
 ?>
 </body>
 </html>

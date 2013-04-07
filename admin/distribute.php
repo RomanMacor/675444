@@ -2,10 +2,10 @@
 require_once "../lib/myFunctions.php";
 
 //validating input
-$warningLimit = filter_input(INPUT_POST, "warningLimit", FILTER_VALIDATE_INT);	
+$warningLimit = filter_input(INPUT_POST, "warningLimit", FILTER_SANITIZE_NUMBER_INT);	
 $id = filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT);
 
-if ($id && $warningLimit){
+if ($id){
 	
 	$product_order = getOrderById($id)->fetch_object();
 	

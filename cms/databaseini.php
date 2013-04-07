@@ -2,7 +2,7 @@
 require_once "../lib/myFunctions.php";
 
 //Connecting to server
-$mysqli = connect();
+$mysqli = connect("localhost","root","","");
 //Creating database
 $mysqli->query("CREATE DATABASE IF NOT EXISTS shop");
 

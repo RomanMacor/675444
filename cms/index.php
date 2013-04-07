@@ -2,7 +2,11 @@
 require_once "../lib/myFunctions.php";
 
 //test if database and table exist, if not, it creates it
-prepareDatabase();
+if (!isDatabaseReady())
+{
+	include('databaseini.php');	
+}
+
 
 ?>
 <!DOCTYPE html>

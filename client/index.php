@@ -25,7 +25,7 @@
 	echo showCategoriesMenu($result);
 
 	//rendering pictures of categories
-	$result = getCategories($mysqli);	
+	$result = getCategories();	
 	echo showCategoriesPictures($result);
 
 

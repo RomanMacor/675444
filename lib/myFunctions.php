@@ -552,7 +552,7 @@ function dropDatabase()
 	$mysqli->query($sqlQuery);
 	$mysqli->close();	
 }
-function prepareDatabase()
+function isDatabaseReady()
 {
 	$mysqli = connect("localhost","root","","");
 
@@ -561,17 +561,18 @@ function prepareDatabase()
 		
 		if($result->num_rows > 0){ 
 			//echo "Database is ready. <br/>";
+			return true;
 		} else{
 			echo "Database hase been created.";
 			//creating database;
-			include('databaseini.php');
+			//include('databaseini.php');
+			return false;
 		}
 	}else{
 		echo "Database hase been created.";
 		//creating database;
-	include('databaseini.php');
-	
+		//include('databaseini.php');
+		return false;
 }
-
 }
 ?>
