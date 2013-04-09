@@ -50,7 +50,7 @@
 		<div>
 			<label for ="price"> Price:
 			</label>
-			<input type ="number" size="6" name="price" min="0" required pattern="\d+"  value=<?php echo ($selectedId ? $selectedPrice : "0"); ?>>
+			<input type ="number" size="6" name="price" min="0" required  step="any" value=<?php echo ($selectedId ? $selectedPrice : "0"); ?>>
 		</div>
 		
 		<div>
@@ -64,9 +64,9 @@
 						$category = $row->name;
 						//for editing 
 						if($selectedCategory === $category){
-							echo "<option value=$category selected > $category </option> ";
+							echo "<option value=\"$category\" selected > $category </option> ";
 						}else{
-							echo "<option value=$category > $category </option>";
+							echo "<option value=\"$category\" > $category </option>";
 						}
 					}
 					

@@ -92,8 +92,14 @@ Takes parameter result list
 */
 function showItemsForCustomer($result)
 {
-	$buildHTML = "<span id=productList> <ul > ";
-	
+	$buildHTML = "<span id=productList> ";
+	$buildHTML .= "Sort By: <select id=sortMenu onchange=\"sortBy()\">
+		  <option selected value=\"\">Do not sort</option>
+		  <option value=\"name\">Product name</option>
+		  <option value=\"price\">Price</option>
+		  <option value=\"category\">Category</option>
+		</select> ";
+	$buildHTML .= "<ul > ";
 	while($row = $result->fetch_object())
 	{
 		$id = $row->id;
@@ -573,6 +579,14 @@ function isDatabaseReady()
 		//creating database;
 		//include('databaseini.php');
 		return false;
+	}
 }
+function setStyle($style)
+{
+	$filePath = "../css_options/".$style.".css";
+	if (!copy($filePath, "../css/default.css")) {
+		echo "File could not be copy";
+	}
+	
 }
 ?>

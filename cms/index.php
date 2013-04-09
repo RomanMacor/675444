@@ -26,6 +26,7 @@ if (!isDatabaseReady())
   	<div> <a href="erase_all_data.php" onClick="return eraseAllData()" > Erase all data</a> </div>
 	<div> <a href="insert_testing_data.php"> Insert testing data</a> </div>
 	<div> <a href="manageCategories.php"> Mangage categories</a> </div>
+   	<div> <a href="choose_design.php"> Set design</a> </div>
 
 	
 </body>

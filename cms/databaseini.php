@@ -13,7 +13,7 @@ $sqlQuery = "CREATE TABLE IF NOT EXISTS product(
 	id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	name varchar(25),
 	quantity INT(10),
-	price INT(10),
+	price DECIMAL(10,2),
 	category varchar(25),
 	description varchar(300),
 	img varchar(35)
@@ -40,7 +40,7 @@ $sqlQuery = "CREATE TABLE IF NOT EXISTS product_order(
 	ordered_date DATE,
 	processed boolean,
 	processed_date DATE,
-	sum INT(10)
+	sum DECIMAL(10,2)
 	)";
 
 $mysqli->query($sqlQuery);
