@@ -20,20 +20,25 @@ require_once "../lib/myFunctions.php";
 $orderBy = filter_input(INPUT_GET, "orderBy", FILTER_SANITIZE_STRING);
 $searchString = filter_input(INPUT_GET, "searchString", FILTER_SANITIZE_STRING);
 
+$page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+if(!$page) $page = 1;
+//TODO: FINISH THIS!
+
 if ($searchString)
 {
-	$result = getProductsBySearchString($searchString,true);
+	$result = getProductsBySearchString($searchString,true, $page);
 	
 } elseif ($orderBy)
 {
-	$result = getAllProducts($orderBy);
+	$result = getAllProducts($orderBy, $page);
 	
 }else
 {
-	$result = getAllProducts();
+	$result = getAllProducts("", $page);
 }
 
-echo showItemsForAdmin($result);
+echo showItemsForAdmin($result, $page);
+
 
 ?>
 </body>

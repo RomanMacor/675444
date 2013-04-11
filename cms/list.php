@@ -20,19 +20,23 @@ $searchString = filter_input(INPUT_GET, "searchString", FILTER_SANITIZE_STRING);
 //sanitizing input
 $orderBy = filter_input(INPUT_GET, "orderBy", FILTER_SANITIZE_STRING);
 
+$page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+if(!$page) $page = 1;
+
+
 if ($searchString)
 {
 	//searching in name, category and description columns	
-	$result = getProductsBySearchString($searchString, true);
+	$result = getProductsBySearchString($searchString, true, $page);
 } elseif($orderBy)
 {
-	$result = getAllProducts($orderBy);
+	$result = getAllProducts($orderBy, $page);
 }else
 {
-	$result = getAllProducts();	
+	$result = getAllProducts("", $page);	
 }
 
-echo showItems($result);
+echo showItems($result, $page);
 
 echo '<a href="add.php"> Add a product </a>';
 ?>

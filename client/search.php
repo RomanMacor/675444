@@ -7,6 +7,7 @@ if ($searchString)
 {
 	//searching in name and description columns	
 	$result = getProductsBySearchString($searchString);
+	echo showItemsForCustomer($result);
 }
-echo showItemsForCustomer($result);
+
 ?>

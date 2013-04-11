@@ -20,35 +20,81 @@
 
 		<button id="basketButton" onclick="goToBasket()" >Go to basket</button>
 	</div>
+  
 <?php
 require_once "../lib/myFunctions.php";
 
 //Rendering menu
 $result = getCategories();	
 echo showCategoriesMenu($result);
-
+?>
+<div>
+  Sort By: 
+  <form action="" method="get">
+	 <select name=orderBy id=sortMenu onchange="sortBy()">
+		  <option selected value="">Do not sort</option>
+		  <option value=name>Product name</option>
+		  <option value=price>Price</option>
+		  <option value=category>Category</option>
+	</select> 
+   </form>
+</div>
+<span id=productList>
+<?php
 
 //sanitizing input
 $searchString = filter_input(INPUT_GET, "searchString", FILTER_SANITIZE_STRING);
 //sanitizing input
 $category = filter_input(INPUT_GET, "category", FILTER_SANITIZE_STRING);
 
+$page = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+if(!$page) $page = 1;
+
+$orderBy = filter_input(INPUT_GET, "orderBy", FILTER_SANITIZE_STRING) ;
+if($orderBy != "name" && $orderBy != "category" && $orderBy != "price") $orderBy = false;
+
+
+
 if ($searchString)
 {
-	//searching in name, category and description columns	
-	$result = getProductsBySearchString($searchString);
+	if($orderBy)
+	{
+		$result = getProductsBySearchString($searchString, false, $page, $orderBy);	
+	}else
+	{
+		//searching in name, category and description columns	
+		$result = getProductsBySearchString($searchString, false, $page);
+	}
+
+	
 } elseif($category)
 {
-	$result = getProductsByCategory($category);
+	if($orderBy)
+	{
+		$result = getProductsByCategory($category, $page, $orderBy);
+	}else
+	{
+		$result = getProductsByCategory($category, $page);
+	}
 }else
 {
-	$result = getAllProducts();	
+	if($orderBy)
+	{
+		$result = getAllProducts($orderBy, $page);			
+	}else
+	{
+		$result = getAllProducts("", $page);	
+	}
 }
 
 
-echo showItemsForCustomer($result);
+echo showItemsForCustomer($result, $page);
 
 ?>
+ </span>
+ 
+
+
 </body>
 
 </html>

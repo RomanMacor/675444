@@ -1,8 +1,11 @@
 <?php
+//setting global variable for items per page
+$GLOBALS["itemsPerPage"] = 5;
 /* 
 Connects to database.
 */
 //setting default values
+
 function connect($server = "localhost", $username = "root", $password = "", $database = "shop")
 {
 	
@@ -46,8 +49,10 @@ function getProductById($id)
 Renders HTML table listing results for cms
 Takes parameter result list
 */
-function showItems($result)
+function showItems($result, $page = 0)
 {
+	$pageMenu = pageMenu($page, "list.php");	
+	
 	$buildHTML = "<table border ='1' id=productList>";
 	//table header
 	$buildHTML .= "<tr> <th> <a href='list.php?orderBy=id'> ID </a> </th> <th> <a href='list.php?orderBy=name'> Name </a> </th> <th>
@@ -61,15 +66,17 @@ function showItems($result)
 		$buildHTML .= "<td> <a href='add.php?id=$row->id'> Edit </a> </td> <td> <a href='delete.php?id=$row->id'> Delete </a> </td>";
 		$buildHTML .= " </tr>";
 	}
-	$buildHTML .= "</table>";
+	$buildHTML .= "</table> $pageMenu";
 	return $buildHTML;
 }
 /*
 Renders HTML table listing results for admin
 Takes parameter result list
 */
-function showItemsForAdmin($result)
+function showItemsForAdmin($result, $page)
 {
+	$pageMenu = pageMenu($page, "list.php");
+
 	$buildHTML = "<table border ='1' id=productList>";
 	//table header
 	$buildHTML .= "<tr> <th> <a href='list.php?orderBy=id'> ID </a> </th> <th> <a href='list.php?orderBy=name'> Name </a> </th> 
@@ -83,23 +90,61 @@ function showItemsForAdmin($result)
 		$buildHTML .= "<td> <input type=number id=newQuantity$row->id </td> <td> <button onclick=changeQuantity($row->id)> Change quantity</button></td>";
 		$buildHTML .= " </tr>";
 	}
-	$buildHTML .= "</table>";
+	$buildHTML .= "</table> $pageMenu";
 	return $buildHTML;
+}
+//generate pagination menu
+function pageMenu($page = 0, $url)
+{
+	if($page < 1 ) return "";
+	$itemsPerPage = $GLOBALS["itemsPerPage"];	
+
+	//setting set parameters
+	//sanitizing input
+	$param = "";
+	$searchString = filter_input(INPUT_GET, "searchString", FILTER_SANITIZE_STRING);
+	//sanitizing input
+	$category = filter_input(INPUT_GET, "category", FILTER_SANITIZE_STRING);
+	//sanitizing input
+	$orderBy = filter_input(INPUT_GET, "orderBy", FILTER_SANITIZE_STRING);
+
+	if($searchString && $searchString != "") $param .= "searchString=$searchString&";
+	if($category && $category != "") $param .= "category=$category&";
+	if($orderBy && $orderBy != "") $param .= "orderBy=$orderBy&";
+
+	$uri = $url."?".$param;
+
+	$menu = "<div> Page number: $page </div><nav> ";
+	
+
+//previus only if it's not the first page
+	 if ($page != 1) 
+	 {
+	 $previous = $page - 1;
+
+	 $menu .= " <a href='$uri"."page=$previous'> <-Previous page</a> ";
+	 }
+	
+	$next = $page + 1;
+
+	$menu .= " <a href='$uri"."page=$next'>Next page-></a> ";
+
+	$menu .= "</nav> ";
+
+
+	if( $page < 1) $menu = "";
+	return $menu;
 }
 /*
 Renders HTML table listing results for client pages
 Takes parameter result list
 */
-function showItemsForCustomer($result)
+function showItemsForCustomer($result, $page = 1)
 {
-	$buildHTML = "<span id=productList> ";
-	$buildHTML .= "Sort By: <select id=sortMenu onchange=\"sortBy()\">
-		  <option selected value=\"\">Do not sort</option>
-		  <option value=\"name\">Product name</option>
-		  <option value=\"price\">Price</option>
-		  <option value=\"category\">Category</option>
-		</select> ";
-	$buildHTML .= "<ul > ";
+	$pageMenu = pageMenu($page, "list.php");
+	
+
+	$buildHTML = "<ul > ";
 	while($row = $result->fetch_object())
 	{
 		$id = $row->id;
@@ -112,7 +157,7 @@ function showItemsForCustomer($result)
 		  				<div> Price: &pound$price <div/>  <button onclick=\"addToBasket($id)\"> Add to Basket </button>
 		  				<input class=itemCount id=$id type=\"number\" value=1 /> </li>";
 	}
-	$buildHTML .= "</ul> </span>";
+	$buildHTML .= "</ul> $pageMenu";
 	return $buildHTML;
 }
 /*
@@ -410,23 +455,47 @@ function createcategory($categoryName, $imgName)
 	$mysqli->close();
 }
 //fetch procducts that has selected category
-function getProductsByCategory($category)
-{
+function getProductsByCategory($category, $page=0, $orderBy="")
+{	
+
+	if($orderBy) $orderBy = " ORDER BY ". $orderBy; 
+	//Pagination
+	
+	$itemsPerPage = $GLOBALS["itemsPerPage"];	
+
+		
+	$limit = ' limit ' .($page - 1) * $itemsPerPage .',' .$itemsPerPage; 	
+
+	if($page < 1) $limit = "";
+
 	$mysqli = connect();
-	$sqlQuery = "SELECT * FROM product WHERE category= '$category'";
+	$sqlQuery = "SELECT * FROM product WHERE category= '$category'".$orderBy.$limit;
+
 	$result = $mysqli->query($sqlQuery);
 	$mysqli->close();
 	return $result;
 }
 //fetch all products, if order by parameter is set, the result is ordered by this parameter
-function getAllProducts($orderBy = "")
+
+
+function getAllProducts($orderBy = "", $page=0)
 {
+	//Pagination
+	
+	$itemsPerPage = $GLOBALS["itemsPerPage"];	
+
+	
+	
+	$limit = ' limit ' .($page - 1) * $itemsPerPage .',' .$itemsPerPage; 	
+	
+	if ($page < 1) $limit = "";
+
 	$mysqli = connect();
 	if($orderBy === "")
 	{
-		$sqlQuery = "SELECT * FROM product";
+		$sqlQuery = "SELECT * FROM product" .$limit;
 	}else{
-		$sqlQuery = "SELECT * FROM product ORDER BY $orderBy";
+		$sqlQuery = "SELECT * FROM product ORDER BY $orderBy" .$limit;
 	}
 	
 	$result = $mysqli->query($sqlQuery);
@@ -449,17 +518,29 @@ function getCategories($orderBy = "")
 	return $result;
 }
 //fetch producst that encompass the searchString , has search in id (bool) flag
-function getProductsBySearchString($searchString, $searchInId = false)
+function getProductsBySearchString($searchString, $searchInId = false, $page=0, $orderBy="")
 {
+	if($orderBy) $orderBy = " ORDER BY ". $orderBy; 
+	
+	
+	//Pagination
+	
+	$itemsPerPage = $GLOBALS["itemsPerPage"];	
+
+		
+	$limit = ' limit ' .($page - 1) * $itemsPerPage .',' .$itemsPerPage; 	
+
+	if($page < 1) $limit = "";
+
 	$mysqli = connect();
 	if($searchInId)
 	{
 		$sqlQuery = "SELECT * FROM product WHERE (name like  '%$searchString%') OR
-				 (description like  '%$searchString%') OR (category like  '%$searchString%') OR (id like  '%$searchString%')";	
+				 (description like  '%$searchString%') OR (category like  '%$searchString%') OR (id like  '%$searchString%')".$limit.$orderBy.$limit;	
 	}else
 	{
 		$sqlQuery = "SELECT * FROM product WHERE (name like  '%$searchString%') OR
-				 (description like  '%$searchString%') OR (category like  '%$searchString%')";	
+				 (description like  '%$searchString%') OR (category like  '%$searchString%')".$orderBy.$limit;	
 	}
 	
 	$result = $mysqli->query($sqlQuery);
@@ -535,7 +616,7 @@ function editProduct($id, $name, $quantity, $price, $category, $description, $im
 	//using sprintf to mix it up
 	$sqlQuery = sprintf("UPDATE product SET name='%s', quantity='%s', price='%s', category='%s', description='%s', img='%s'
 					WHERE id='%s'", 
-					$name, $quantity, $price, $category, $description, $imgName, $_GET['id']);
+					$name, $quantity, $price, $category, $description, $imgName, $id);
 	$mysqli->query($sqlQuery);
 	$mysqli->close();
 }
