@@ -686,18 +686,28 @@ function setStyle($style)
 	}
 	
 }
-function showCmsMenu(){
-	$menu = "<nav id=navigation> <ul>
-		<li> <a href=add.php> Add a product </a> </li>
+function showCmsMenu()
+{
+	$menu = '<nav id=navigation> <ul>
+		<li> <a href="add.php"> Add a product </a> </li>
 		<li> <a href=list.php> List all product </a> </li>
 
-	  	<li> <a href=erase_all_data.php onClick=return eraseAllData() > Erase all data</a> </li>
-		<li> <a href=insert_testing_data.php> Insert testing data</a> </li>
-		<li> <a href=manageCategories.php> Mangage categories</a> </li>
-	   	<li> <a href=choose_design.php> Set design</a> </li>
+	  	<li> <a href="erase_all_data.php" onClick="return eraseAllData()"" > Erase all data</a> </li>
+		<li> <a href="insert_testing_data.php"> Insert testing data</a> </li>
+		<li> <a href="manageCategories.php"> Mangage categories</a> </li>
+	   	<li> <a href="choose_design.php"> Set design</a> </li>
 		
 	</ul> </nav>
-	";
+	';
+	return $menu;
+}
+function showAdminMenu()
+{
+	$menu = '<nav> <ul>
+			<li> <a href="manage_orders.php"> Manage orders</a> </li>
+			<li> <a href="report.php"> Manage reports</a> </li>
+			<li> <a href="list.php"> List products and manage qauntity</a> </li>
+		</ul> </nav>';
 	return $menu;
 }
 ?>

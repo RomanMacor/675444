@@ -33,7 +33,7 @@ label{
 	display: block;
 	min-width: 80px;
 }
-nav#navigation a:link,a:visited
+nav a:link, nav a:visited
 {
 	display:block;
 	width:120px;
@@ -48,7 +48,7 @@ nav#navigation a:link,a:visited
 	text-decoration:none;
 	text-transform:uppercase;
 }
-nav a:hover,a:active
+nav a:hover, nav a:active
 {
 background-color:#7A991A;
 }
@@ -61,7 +61,7 @@ background-color:#7A991A;
 	
 	width: 70%;
 	height: 100%;
-	min-height: 500px;
+	/*min-height: 500px;*/
 	margin-top: 20px;
 	padding-top: 20px;
 	padding-top: 20px;
