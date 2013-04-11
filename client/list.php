@@ -28,18 +28,18 @@ require_once "../lib/myFunctions.php";
 $result = getCategories();	
 echo showCategoriesMenu($result);
 ?>
-<div>
+<div id="sortBy">
   Sort By: 
   <form action="" method="get">
-	 <select name=orderBy id=sortMenu onchange="sortBy()">
+	 <select name=orderBy id="sortMenu" onchange="sortBy()">
 		  <option selected value="">Do not sort</option>
-		  <option value=name>Product name</option>
-		  <option value=price>Price</option>
-		  <option value=category>Category</option>
+		  <option value="name">Product name</option>
+		  <option value="price">Price</option>
+		  <option value="category">Category</option>
 	</select> 
    </form>
 </div>
-<span id=productList>
+<span id="productList">
 <?php
 
 //sanitizing input

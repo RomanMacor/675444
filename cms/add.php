@@ -32,25 +32,31 @@
 <head>
 	<meta charset="utf-8">
 	<title>Title of the document</title>
+	<link rel="stylesheet" href="../css/default.css" type="text/css"/>
 </head>
 
 <body>
-	<form  method="post" action= <?php echo ($selectedId ? "added.php?id=$selectedId" : "added.php"); ?> 
+	<?php 
+		echo showCmsMenu();
+		
+	?>
+
+	<form  method="post" action= "<?php echo ($selectedId ? "added.php?id=$selectedId" : "added.php"); ?>"
 			enctype="multipart/form-data">
 		<div>
 			<label for="name"> Name: 
 			</label>
-			<input type ="text" name="name" required placeholder="Name of the product" autofocus value=<?php echo $selectedName; ?> >
+			<input type ="text" name="name" required placeholder="Name of the product" autofocus value="<?php echo $selectedName; ?>" >
 		</div>
 		<div>
 			<label for ="quantity"> Quantity:
 			</label>
-			<input type ="number" size="6" name="quantity" required pattern="\d+"  value=<?php echo ($selectedId ? $selectedQuantity : "1"); ?>>
+			<input type ="number" size="6" name="quantity" required pattern="\d+"  value="<?php echo ($selectedId ? $selectedQuantity : "1"); ?>">
 		</div>
 		<div>
 			<label for ="price"> Price:
 			</label>
-			<input type ="number" size="6" name="price" min="0" required  step="any" value=<?php echo ($selectedId ? $selectedPrice : "0"); ?>>
+			<input type ="number" size="6" name="price" min="0" required  step="any" value="<?php echo ($selectedId ? $selectedPrice : "0"); ?>">
 		</div>
 		
 		<div>
@@ -87,10 +93,10 @@
 			</label>
 		
 			<input type="file" name="picture" id="picture" accept="image/*">
-			<input type="hidden" name="setPicture" value=<?php echo $selectedPicture; ?>>
+			<input type="hidden" name="setPicture" value="<?php echo $selectedPicture; ?>">
 		</div>
 		<div>
-			<input type="submit" value=<?php echo ($selectedId ? "Edit" : "Add"); ?> >
+			<input type="submit" value="<?php echo ($selectedId ? "Edit" : "Add"); ?>" >
 			<input type="reset" value="Clear">
 		</div>
  	</form>

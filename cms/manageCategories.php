@@ -3,9 +3,15 @@
 <head>
 	<meta charset="utf-8">
 	<title>Manage Categories</title>
+	<link rel="stylesheet" href="../css/default.css" type="text/css"/>
 </head>
 
 <body>
+	<?php 
+		require_once "../lib/myFunctions.php";
+		echo showCmsMenu();
+		
+	?>
 <a href=add.php> Back to creating new product</a>
 <form method="post" action="addCategory.php" 
 		enctype="multipart/form-data">
@@ -15,7 +21,6 @@
 </form>
 
 <?php
-require_once "../lib/myFunctions.php";
 
 $orderBy = filter_input(INPUT_GET, "orderBy", FILTER_SANITIZE_STRING);
 

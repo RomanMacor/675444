@@ -8,9 +8,9 @@
 	<script type="text/javascript" src="../lib/javascript/myFunctions.js"></script>
 </head>
 
-<body onload=populateWarningLimit()>
-	<label for=warningLimit> Set a warning if the quantity gets bellow </label>
-	<input type="number" name= "warningLimit" id= "warningLimit" onchange=setWarningLimit() >
+<body onload="populateWarningLimit()">
+	<label for="warningLimit"> Set a warning if the quantity gets bellow </label>
+	<input type="number" name= "warningLimit" id= "warningLimit" onchange="setWarningLimit()" >
 	<div id="warning"> </div>
 <?php
 require_once "../lib/myFunctions.php";

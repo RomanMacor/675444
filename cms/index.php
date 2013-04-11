@@ -15,6 +15,7 @@ if (!isDatabaseReady())
 	<meta charset="utf-8">
 	<title>CMS pages</title>
 	<script type="text/javascript" src="../lib/javascript/myFunctions.js"></script>
+	<link rel="stylesheet" href="../css/default.css" type="text/css"/>
 </head>
 
 <body>

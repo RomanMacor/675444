@@ -34,14 +34,24 @@ if($_GET["basketString"] == "null" ){
 <button id="displayFormButton" onclick="displayCustomerForm()">Put down delivery details and buy</button>
 
 <form id="cDetails" style="display: none;" method="post" action="checkout.php">
-	First Name: <input type="text" name="fName" required/> <br/>
-	Last Name: <input type="text" name="lName" required/> <br/>
+	<label for=fName> First Name: </label>
+	<input type="text" name="fName" required/> <br/>
+
+	<label for=lName> Last Name: </label>
+	<input type="text" name="lName" required/> <br/>
 	
-	Town: <input type="text" name="town" required/> <br/>
-	Street and Number: <input type="text" name="street" required/> <br/>
-	Post code: <input type="text" name="post" required/> <br/>
+	<label for=town> Town: </label>
+	<input type="text" name="town" required/> <br/>
 	
-	Email: <input type="email" name="email" required/> <br/>
+	<label for=street> Street: </label>
+	<input type="text" name="street" required/> <br/>
+	
+	<label for=post> Post code: </label>
+	<input type="text" name="post" required/> <br/>
+	
+	<label for=email> Email: </label>
+	<input type="email" name="email" required/> <br/>
+	
 	<input type="hidden" id="basketString" name="basketString" /> 
 	<input onclick="checkout('basketString')" type="submit" value="Buy" />
     <input type=hidden name=sum value=<?php echo $sum?>>

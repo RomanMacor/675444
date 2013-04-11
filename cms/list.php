@@ -3,17 +3,21 @@
 <head>
 	<meta charset="utf-8">
 	<title>List of products CMS</title>
-	<link rel="stylesheet" href="../css/default2.css" type="text/css"/>
+	<link rel="stylesheet" href="../css/default.css" type="text/css"/>
 	<script type="text/javascript" src="../lib/javascript/myFunctions.js"></script>
 </head>
 
 <body >
+	<?php 
+		require_once "../lib/myFunctions.php";
+		echo showCmsMenu();	
+	?>
+
 	<form method="get" action="" >
 		Search: <input type="search" name="searchString" onkeyup="search(this.value)"/> 
 		<input type="submit" value="search" />
 	</form>
 <?php
-require_once "../lib/myFunctions.php";
 
 //sanitizing input
 $searchString = filter_input(INPUT_GET, "searchString", FILTER_SANITIZE_STRING);

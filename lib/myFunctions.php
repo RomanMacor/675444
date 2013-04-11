@@ -114,7 +114,7 @@ function pageMenu($page = 0, $url)
 
 	$uri = $url."?".$param;
 
-	$menu = "<div> Page number: $page </div><nav> ";
+	$menu = "<div id=pageMenu> Page number: $page  <br>";
 	
 
 //previus only if it's not the first page
@@ -129,7 +129,7 @@ function pageMenu($page = 0, $url)
 
 	$menu .= " <a href='$uri"."page=$next'>Next page-></a> ";
 
-	$menu .= "</nav> ";
+	$menu .= "</div> ";
 
 
 	if( $page < 1) $menu = "";
@@ -225,10 +225,15 @@ function showCategoriesPictures($caregories)
 
 function showBasketItems($basketString)
 {
-	$mysqli = connect("localhost","root","","shop");
+	$mysqli = connect();
 	
 	$basketObj = json_decode($basketString);
 	
+	if($basketObj === null) 
+	{
+		echo "<p>Basket is empty.</p>";
+		return 0;
+	}
 	
 	$table = "<table> <tr><th>Name</th><th>Price</th><th>Quantity</th><th>Sum</th>";
 	$total = 0;
@@ -416,19 +421,30 @@ function showItemDetail($result)
 		$id = $row->id;
 		$name = $row->name;
 		$price = $row->price;
+		$quantity = $row->quantity;
 		$category = $row->category;
 		$description = $row->description;
+		
+		if($quantity > 100) $quantity = "More than 100";
+		if($quantity > 20) $quantity = "More than 20";
+		if($quantity > 10) $quantity = "More than 10";
+		
+		
 
-		$buildHTML = "  <h2> $name </h2>
+		$buildHTML = "  <div id=itemDetail>
 						<img id=detailImage class=rightContent src=../user_img/$row->img alt=$row->name >
+						<h2> $name </h2>
+						
 		  				<div> Price: &pound$price <div/>  
 		  				<div> Description: $description <div/>  
+		  				<div> In stock: $quantity <div/>  
 		  				<button onclick=addToBasket($id)> Add to Basket </button>
-		  				<input class=itemCount id=$id type=number value=1 />";
+		  				<input class=itemCount id=$id type=number value=1 /> </div>";
 	
 	
 	return $buildHTML;
 }
+//changes quantity of product in the database
 function changeQuantity($id, $quantity)
 {
 	$db = connect();
@@ -669,5 +685,19 @@ function setStyle($style)
 		echo "File could not be copy";
 	}
 	
+}
+function showCmsMenu(){
+	$menu = "<nav id=navigation> <ul>
+		<li> <a href=add.php> Add a product </a> </li>
+		<li> <a href=list.php> List all product </a> </li>
+
+	  	<li> <a href=erase_all_data.php onClick=return eraseAllData() > Erase all data</a> </li>
+		<li> <a href=insert_testing_data.php> Insert testing data</a> </li>
+		<li> <a href=manageCategories.php> Mangage categories</a> </li>
+	   	<li> <a href=choose_design.php> Set design</a> </li>
+		
+	</ul> </nav>
+	";
+	return $menu;
 }
 ?>
