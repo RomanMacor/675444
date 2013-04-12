@@ -39,7 +39,7 @@ echo showCategoriesMenu($result);
 	</select> 
    </form>
 </div>
-<span id="productList">
+<div id="productList">
 <?php
 
 //sanitizing input
@@ -91,7 +91,7 @@ if ($searchString)
 echo showItemsForCustomer($result, $page);
 
 ?>
- </span>
+ </div>
  
 
 

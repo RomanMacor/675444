@@ -84,7 +84,7 @@
 		<div>
 			<label for="description"> Description:
 			</label>
-			<textarea name="description"  >
+			<textarea name="description" rows="4" cols="50" maxlength="300">
 				<?php echo $selectedDescription; ?>
 			</textarea>
 		</div>			

@@ -19,7 +19,6 @@
 	
 <?php
 
-
 //validation of input
 $orderBy = filter_input(INPUT_GET, "orderBy", FILTER_SANITIZE_STRING);
 $searchString = filter_input(INPUT_GET, "searchString", FILTER_SANITIZE_STRING);

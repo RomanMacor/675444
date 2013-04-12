@@ -12,7 +12,7 @@
 		echo showCmsMenu();
 		
 	?>
-<a href=add.php> Back to creating new product</a>
+
 <form method="post" action="addCategory.php" 
 		enctype="multipart/form-data">
 	<input type="text" name="categoryName" placeholder="Name of the category" required /> <br/>
