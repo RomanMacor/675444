@@ -3,16 +3,15 @@
 	
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	//deleting picture from server
-	//commented because it
-/*
-	$result =  getProductById($id);
+
+	$result =  getCategoryById($id);
 	$obj = $result->fetch_object();
 
 	$image = $obj->img;
-	if ($image != "default.png"){
-		unlink("../img/".$image);
+	if ($image != "default.jpg"){
+		unlink("../user_img/".$image);
 	}
-	*/
+	
 	//deleting entry in the database
 	deleteCategory($id);
 	

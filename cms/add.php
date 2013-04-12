@@ -33,6 +33,7 @@
 	<meta charset="utf-8">
 	<title>Add a product</title>
 	<link rel="stylesheet" href="../css/default.css" type="text/css"/>
+	<script type="text/javascript" src="../lib/javascript/myFunctions.js"></script>
 </head>
 
 <body>

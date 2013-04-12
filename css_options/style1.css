@@ -149,14 +149,13 @@ h3{
 }
 #itemDetail
 {
+	margin-top: 80px;
 	font-size: 20px;
-	background-color: grey;
+	background-color: #98bf21;
 	width: 80%
 
 }
 #detailImage{
-	
-	/*margin-top: 70px;*/
 	width: 300px;
 	width: 20%;
 }

@@ -7,7 +7,8 @@ if ($searchString)
 {
 	//searching in name, id, category and description columns	
 	$result = getProductsBySearchString($searchString,true);
+	echo showItemsForAdmin($result);
 }
-echo showItemsForAdmin($result);
+
 
 ?>

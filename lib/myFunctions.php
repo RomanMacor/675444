@@ -39,8 +39,16 @@ function echoQuery($query, $successString, $db)
 // Fetches the product with specified ID
 function getProductById($id)
 {
-	$db = connect("localhost","root","","shop");
+	$db = connect();
 	$result = $db->query("SELECT * FROM product WHERE id=$id");
+	$db->close();
+	return $result;
+}
+// Fetches the product with specified ID
+function getCategoryById($id)
+{
+	$db = connect();
+	$result = $db->query("SELECT * FROM category WHERE id=$id");
 	$db->close();
 	return $result;
 }
@@ -400,7 +408,7 @@ function validateAndSavePicture()
   }
   if ($_FILES["picture"]["error"] > 0)
   {
-    return "default.png";
+    return "default.jpg";
   }
   if ($_FILES["picture"]["type"] == "image/jpng" ||
       $_FILES["picture"]["type"] == "image/gif" ||
@@ -692,7 +700,7 @@ function showCmsMenu()
 		<li> <a href="add.php"> Add a product </a> </li>
 		<li> <a href=list.php> List all product </a> </li>
 
-	  	<li> <a href="erase_all_data.php" onClick="return eraseAllData()"" > Erase all data</a> </li>
+	  	<li> <a href="erase_all_data.php" onClick="return eraseAllData()" > Erase all data</a> </li>
 		<li> <a href="insert_testing_data.php"> Insert testing data</a> </li>
 		<li> <a href="manageCategories.php"> Mangage categories</a> </li>
 	   	<li> <a href="choose_design.php"> Set design</a> </li>
