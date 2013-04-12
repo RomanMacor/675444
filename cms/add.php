@@ -31,7 +31,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Title of the document</title>
+	<title>Add a product</title>
 	<link rel="stylesheet" href="../css/default.css" type="text/css"/>
 </head>
 

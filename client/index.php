@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Title of the document</title>
+	<title>Web shop</title>
     <link  rel="stylesheet" type="text/css" href="../css/default.css" />
 </head>
 

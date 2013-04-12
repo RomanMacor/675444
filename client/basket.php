@@ -3,7 +3,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Title of the document</title>
+	<title>Basket</title>
 	<link rel="stylesheet" href="../lib/css/styles.css" type="text/css"/>
 	<script type="text/javascript" src="../lib/javascript/myFunctions.js"></script>
     <link type="text/css" rel="stylesheet" href="../css/default.css" />
