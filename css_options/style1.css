@@ -159,3 +159,11 @@ h3{
 	width: 300px;
 	width: 20%;
 }
+#categoryPictures
+{
+	margin-top: 50px;
+}
+#categoryPictures li
+{
+	margin-right: 50px;
+}

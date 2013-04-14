@@ -13,7 +13,7 @@
 		echo showCmsMenu();	
 	?>
 
-	<form method="get" action="" >
+	<form method="get" action="list.php" >
 		Search: <input type="search" name="searchString" onkeyup="search(this.value)"/> 
 		<input type="submit" value="search" />
 	</form>

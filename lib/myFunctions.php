@@ -61,20 +61,24 @@ function showItems($result, $page = 0)
 {
 	$pageMenu = pageMenu($page, "list.php");	
 	
-	$buildHTML = "<table border ='1' id=productList>";
+	$buildHTML = "<table id=productList>";
 	//table header
 	$buildHTML .= "<tr> <th> <a href='list.php?orderBy=id'> ID </a> </th> <th> <a href='list.php?orderBy=name'> Name </a> </th> <th>
 					 <a href='list.php?orderBy=quantity'> Quantity </a> </th> <th> <a href='list.php?orderBy=price'> Price </a> </th>
 					 <th> <a href='list.php?orderBy=category'> Category </a> </th> <th>Description</th> <th>Picture</th></tr>";
 	//data
-	while($row = $result->fetch_object())
+	if($result)
 	{
-		$buildHTML .= "<tr> <td> $row->id </td> <td> $row->name </td> <td> $row->quantity </td> <td> &pound$row->price </td> 
-						<td> $row->category </td> <td> $row->description </td> <td>$row->img</td>";
-		$buildHTML .= "<td> <a href='add.php?id=$row->id'> Edit </a> </td> <td> <a href='delete.php?id=$row->id'> Delete </a> </td>";
-		$buildHTML .= " </tr>";
+		while($row = $result->fetch_object())
+		{
+			$buildHTML .= "<tr> <td> $row->id </td> <td> $row->name </td> <td> $row->quantity </td> <td> &pound$row->price </td> 
+							<td> $row->category </td> <td> $row->description </td> <td>$row->img</td>";
+			$buildHTML .= "<td> <a href='add.php?id=$row->id'> Edit </a> </td> <td> <a href='delete.php?id=$row->id'> Delete </a> </td>";
+			$buildHTML .= " </tr>";
+		}
+		$buildHTML .= "</table> $pageMenu";	
 	}
-	$buildHTML .= "</table> $pageMenu";
+	
 	return $buildHTML;
 }
 /*
@@ -85,20 +89,23 @@ function showItemsForAdmin($result, $page)
 {
 	$pageMenu = pageMenu($page, "list.php");
 
-	$buildHTML = "<table border ='1' id=productList>";
+	$buildHTML = "<table >";
 	//table header
 	$buildHTML .= "<tr> <th> <a href='list.php?orderBy=id'> ID </a> </th> <th> <a href='list.php?orderBy=name'> Name </a> </th> 
 					<th> <a href='list.php?orderBy=price'> Price </a> </th> <th> <a href='list.php?orderBy=category'> Category </a> </th> 
 					<th>Description</th> <th>Picture</th> <th> <a href='list.php?orderBy=quantity'> Quantity </a> </th> <th> New Quantity </th> </tr> ";
 	//data
-	while($row = $result->fetch_object())
+	if($result)
 	{
-		$buildHTML .= "<tr> <td> $row->id </td> <td> $row->name </td> <td> &pound$row->price </td> 
-						<td> $row->category </td> <td> $row->description </td> <td>$row->img</td> <td id=quantity$row->id> $row->quantity </td>";
-		$buildHTML .= "<td> <input type=number id=newQuantity$row->id </td> <td> <button onclick=changeQuantity($row->id)> Change quantity</button></td>";
-		$buildHTML .= " </tr>";
+		while($row = $result->fetch_object())
+		{
+			$buildHTML .= "<tr> <td> $row->id </td> <td> $row->name </td> <td> &pound$row->price </td> 
+							<td> $row->category </td> <td> $row->description </td> <td>$row->img</td> <td id=quantity$row->id> $row->quantity </td>";
+			$buildHTML .= "<td> <input type=number id=newQuantity$row->id </td> <td> <button onclick=changeQuantity($row->id)> Change quantity</button></td>";
+			$buildHTML .= " </tr>";
+		}
+		$buildHTML .= "</table> $pageMenu";
 	}
-	$buildHTML .= "</table> $pageMenu";
 	return $buildHTML;
 }
 //generate pagination menu
@@ -153,17 +160,20 @@ function showItemsForCustomer($result, $page = 1)
 	
 
 	$buildHTML = "<ul > ";
-	while($row = $result->fetch_object())
+	if($result)
 	{
-		$id = $row->id;
-		$name = $row->name;
-		$price = $row->price;
-		// $category = $row->category;
-		// $description = $row->description;
+		while($row = $result->fetch_object())
+		{
+			$id = $row->id;
+			$name = $row->name;
+			$price = $row->price;
+			// $category = $row->category;
+			// $description = $row->description;
 
-		$buildHTML .= "<li class=product> <a href=detail.php?id=$id> <div> $name </div><img class=itemImage src=../user_img/$row->img alt=$row->name > </a>
-		  				<div> Price: &pound$price <div/>  <button onclick=\"addToBasket($id)\"> Add to Basket </button>
-		  				<input class=itemCount id=$id type=\"number\" value=1 /> </li>";
+			$buildHTML .= "<li class=product> <a href=detail.php?id=$id> <div> $name </div><img class=itemImage src=../user_img/$row->img alt=$row->name > </a>
+			  				<div> Price: &pound$price <div/>  <button onclick=\"addToBasket($id)\"> Add to Basket </button>
+			  				<input class=itemCount id=$id type=\"number\" value=1 /> </li>";
+		}
 	}
 	$buildHTML .= "</ul> $pageMenu";
 	return $buildHTML;
@@ -175,7 +185,7 @@ Takes parameter result list
 
 function showCategories($result)
 {
-	$buildHTML = "<table border ='1'";
+	$buildHTML = "<table>";
 	$buildHTML .= "<tr> <th> <a href='list.php?orderBy=id'> ID </a> </th> <th> <a href='list.php?orderBy=name'> Name </a> </th> <th> Picture </th>";
 	if($result)
 	{
@@ -213,14 +223,14 @@ function showCategoriesMenu($caregories)
 }
 function showCategoriesPictures($caregories)
 {
-	$buildHTML = "<ul>";
+	$buildHTML = "<ul id=categoryPictures>";
 	
 	if($caregories)
 	{
 		while($row = $caregories->fetch_object()){
 			
 			$buildHTML .= "<li> <a href=list.php?category=$row->name> 
-							 <h3> $row->name <h3>
+							 <h3> $row->name </h3>
 							<img src=../user_img/$row->img height=100 width=100 alt=$row->name >
 							</a> </li>";
 			
@@ -282,7 +292,7 @@ Renders items ordered by user
 */
 function showOrders($result)
 {
-	$buildHTML = "<table border ='1'>";
+	$buildHTML = "<table>";
 	
 	$buildHTML .= "<tr> <th> <a href='manage_orders.php?orderBy=id'> ID </a> </th> 
 						<th> <a href='manage_orders.php?orderBy=item_id'> Item ID </a> </th> 
@@ -310,7 +320,7 @@ Renders orders that has been marked as delivered
 */
 function showReport($result)
 {
-	$buildHTML = "<table border ='1'>";
+	$buildHTML = "<table>";
 	
 	$buildHTML .= "<tr> <th> <a href='report.php?orderBy=id'> ID </a> </th> 
 						<th> <a href='report.php?orderBy=item_id'> Item ID </a> </th> 
@@ -560,7 +570,7 @@ function getProductsBySearchString($searchString, $searchInId = false, $page=0, 
 	if($searchInId)
 	{
 		$sqlQuery = "SELECT * FROM product WHERE (name like  '%$searchString%') OR
-				 (description like  '%$searchString%') OR (category like  '%$searchString%') OR (id like  '%$searchString%')".$limit.$orderBy.$limit;	
+				 (description like  '%$searchString%') OR (category like  '%$searchString%') OR (id like  '%$searchString%')".$orderBy.$limit;	
 	}else
 	{
 		$sqlQuery = "SELECT * FROM product WHERE (name like  '%$searchString%') OR
@@ -674,15 +684,11 @@ function isDatabaseReady()
 			//echo "Database is ready. <br/>";
 			return true;
 		} else{
-			echo "Database hase been created.";
-			//creating database;
-			//include('databaseini.php');
+			//echo "Database hase been created.";
 			return false;
 		}
 	}else{
-		echo "Database hase been created.";
-		//creating database;
-		//include('databaseini.php');
+		//echo "Database hase been created.";
 		return false;
 	}
 }

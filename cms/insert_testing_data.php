@@ -11,8 +11,6 @@ $sqlQuery = "INSERT INTO product (name, quantity, price, category, description, 
 	('iphone', 25, 500, 'Phones', 'For cool people', 'iphone.jpg')";
 $mysqli->query($sqlQuery);
 
-echoQuery($sqlQuery, "Data inserted.", $mysqli);
-
 $sqlQuery = "INSERT INTO product (name, quantity, price, category, description, img) VALUES 
 	('nokia', 26, 300, 'Phones', 'Robust device', 'nokia.jpg')";
 $mysqli->query($sqlQuery);
@@ -58,6 +56,10 @@ $mysqli->query($sqlQuery);
 $sqlQuery = "INSERT INTO category (name, img) VALUES ('Headphones','headphones.jpg')";
 $mysqli->query($sqlQuery);
 
+//coping category pictures
+copy("../img/phone.jpg", "../user_img/phone.jpg");
+copy("../img/computer.jpg", "../user_img/computer.jpg");
+copy("../img/headphones.jpg", "../user_img/headphones.jpg");
 
 //insert product orders
 $sqlQuery = "INSERT INTO product_order (first_name, last_name, address, email, item_id, quantity, ordered_date, processed, sum) VALUES
@@ -78,9 +80,7 @@ $sqlQuery = "INSERT INTO product_order (first_name, last_name, address, email, i
 			 ('John', 'Smith', 'London, 356', 'john@gmail.com', 1, 3, '2013-03-22', true, '2013-04-30', 1500)";
 $mysqli->query($sqlQuery);
 	
-
-echo "The data has been succesfully inserted. </br>"; 
-echo "<a href=index.php> Please proceed back to home page. </a>";
+header("Location: index.php");	
 $mysqli->close();
 ?>
 

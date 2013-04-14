@@ -3,16 +3,16 @@
 <head>
 	<meta charset="utf-8">
 	<title>Admin pages</title>
-	
+	<link rel="stylesheet" href="../css/default.css" type="text/css"/>
 </head>
 
 <body>
 <h1>Welcome to admin pages </h1>
-<ul>
-	<li> <a href="manage_orders.php"> Manage orders</a> </li>
-	<li> <a href="report.php"> Manage reports</a> </li>
-	<li> <a href="list.php"> List products and manage qauntity</a> </li>
-</ul>
+<?php
+		require_once "../lib/myFunctions.php";
+		echo showAdminMenu();
+	?>
+
 </body>
 
 </html>

@@ -7,29 +7,5 @@ if (!isDatabaseReady())
 	include('databaseini.php');	
 }
 
-
+include "list.php";
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>CMS pages</title>
-	<script type="text/javascript" src="../lib/javascript/myFunctions.js"></script>
-	<link rel="stylesheet" href="../css/default.css" type="text/css"/>
-</head>
-
-<body>
-	<h1> Welcome to CMS pages</h1>
-
-	<div> <a href="add.php"> Add a product </a> </div>
-	<div> <a href="list.php"> List all product </a> </div>
-
-  	<div> <a href="erase_all_data.php" onClick="return eraseAllData()" > Erase all data</a> </div>
-	<div> <a href="insert_testing_data.php"> Insert testing data</a> </div>
-	<div> <a href="manageCategories.php"> Mangage categories</a> </div>
-   	<div> <a href="choose_design.php"> Set design</a> </div>
-
-	
-</body>
-
-</html>
