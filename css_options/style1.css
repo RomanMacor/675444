@@ -38,10 +38,11 @@ label
 }
 table
 {
-	border: 0px;
+	
 }
 th,td 
 {
+	border: 1px solid;
 	padding: 10px;
 }
 nav a:link, nav a:visited
