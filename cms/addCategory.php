@@ -11,7 +11,7 @@ $categoryName = filter_input(INPUT_POST, 'categoryName', FILTER_SANITIZE_STRING)
 $imgName = validateAndSavePicture();
 
   
-if($categoryName){
+if($categoryName && $categoryName != ""){
 
 	createcategory($categoryName, $imgName);
 

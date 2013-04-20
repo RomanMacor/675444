@@ -85,9 +85,7 @@
 		<div>
 			<label for="description"> Description:
 			</label>
-			<textarea name="description" rows="4" cols="50" maxlength="300">
-				<?php echo $selectedDescription; ?>
-			</textarea>
+			<textarea name="description" rows="4" cols="50" maxlength="300"><?php echo $selectedDescription; ?></textarea>
 		</div>			
 		<div>
 			<label for ="Picture">  <?php echo ($selectedId ? "Selected picture is: ". $selectedPicture : "Picture:"); ?>

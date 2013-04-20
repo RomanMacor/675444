@@ -11,7 +11,7 @@
 		require_once "../lib/myFunctions.php";
 		echo showCmsMenu();	
 	?>
-	<div> The desing has been set, <a href="index.php">  Procced back to home bage</a></div>
+	<div> The desing has been set (please refresh the page to see the effect), <a href="index.php">  Procced back to home page</a></div>
 </body>
 </html>
 <?php

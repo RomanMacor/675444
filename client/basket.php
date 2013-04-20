@@ -17,10 +17,10 @@ require_once "../lib/myFunctions.php";
 //Rendering menu
 $result = getCategories();	
 echo showCategoriesMenu($result);
-
+$sum = 0;
 if($_GET["basketString"] == "null" ){
 	
-	echo "<b> Basket is Empty  </b< <br>";
+	echo "<p><b> Basket is Empty  </b> </p>";
 	//echo '<a href="list.php"> Back to the shoping</a>';
 }else{
 
@@ -53,8 +53,10 @@ if($_GET["basketString"] == "null" ){
 	<input type="email" name="email" required/> <br/>
 	
 	<input type="hidden" id="basketString" name="basketString" /> 
+	<input type=hidden name=sum value=<?php echo $sum?>>
+	
 	<input onclick="checkout('basketString')" type="submit" value="Buy" />
-    <input type=hidden name=sum value=<?php echo $sum?>>
+    
 
 </form>
 

@@ -15,6 +15,8 @@ $sum = $_POST['sum'];
 $basketString = filter_input(INPUT_POST, "basketString", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 $basketObj = json_decode($basketString);
 
+echo "basket string: $basketString";
+
 //validating email
 if (filter_var($email, FILTER_VALIDATE_EMAIL))
 {

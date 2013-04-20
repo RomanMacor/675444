@@ -13,11 +13,13 @@
 		echo showCmsMenu();
 		
 	?>
-	<form method="post" action="set_design.php">
 	<h2>Please choose a style for the website:</h2>
-	<input checked type="radio" name="style" value="style1"><img src="../img/style1.jpg"/><br>
-	<input type="radio" name="style" value="style2"><img src="../img/style2.jpg"/><br>
-	<input type="submit"  value="Save">
+	
+	<form method="post" action="set_design.php">
+	
+		<input checked type="radio" name="style" value="style1"><img src="../img/style1.jpg"/><br>
+		<input type="radio" name="style" value="style2"><img src="../img/style2.jpg"/><br>
+		<input type="submit"  value="Save">
 
 	</form>
 </body>

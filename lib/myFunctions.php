@@ -703,7 +703,7 @@ function setStyle($style)
 function showCmsMenu()
 {
 	$menu = '<nav id=navigation> <ul>
-		<li> <a href="add.php"> Add a product </a> </li>
+		<li> <a href="add.php"> Add product </a> </li>
 		<li> <a href=list.php> List all product </a> </li>
 
 	  	<li> <a href="erase_all_data.php" onClick="return eraseAllData()" > Erase all data</a> </li>

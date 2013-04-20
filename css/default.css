@@ -151,16 +151,12 @@ h3{
 #itemDetail
 {
 	margin-top: 80px;
-	/*margin-top: 50px;*/
 	font-size: 20px;
 	background-color: #98bf21;
 	width: 80%
 
 }
-#detailImage
-{
-	/*display: none;*/
-	/*margin-top: 70px;*/
+#detailImage{
 	width: 300px;
 	width: 20%;
 }

@@ -31,7 +31,7 @@ if(!$quantity) $quantity = 0;
 //if(!$price) $price = 0;
 //Connecting to server and iserting data ONLY if valid input
 
-if($name && $category && $imgName && $price)
+if($name && $category && $imgName && $price && $name != "")
 {
 	$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 	
@@ -47,6 +47,6 @@ if($name && $category && $imgName && $price)
 	echo "Invalid input, data could not be inserted.";
 
 }
-echo '<a href="list.php"> Back to list</a>';
+echo '<a href="add.php"> Back to "Add product"</a>';
 
 ?>
