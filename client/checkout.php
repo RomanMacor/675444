@@ -15,10 +15,8 @@ $sum = $_POST['sum'];
 $basketString = filter_input(INPUT_POST, "basketString", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 $basketObj = json_decode($basketString);
 
-echo "basket string: $basketString";
 
-//validating email
-if (filter_var($email, FILTER_VALIDATE_EMAIL))
+if (filter_var($email, FILTER_VALIDATE_EMAIL) && $fName && $lName && $address)
 {
 	
 	foreach ($basketObj as $obj)
@@ -32,7 +30,7 @@ if (filter_var($email, FILTER_VALIDATE_EMAIL))
 
 }else
 {
-	echo "Invalid email. Please click return button on the browser or follow the link back to basket";
+	echo "<p> Invalid user information. The order could not be accepted. Please follow the link fill the user detail again</p>";
 	echo "<a href=basket.php?basketString=$basketString> Basket</a>";
 }
 

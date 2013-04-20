@@ -31,7 +31,7 @@ if(!$quantity) $quantity = 0;
 //if(!$price) $price = 0;
 //Connecting to server and iserting data ONLY if valid input
 
-if($name && $category && $imgName && $price && $name != "")
+if($name && $category && $imgName && $price)
 {
 	$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 	
