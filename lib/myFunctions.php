@@ -221,6 +221,9 @@ function showCategoriesMenu($caregories)
 		return $buildHTML;
 	}
 }
+/*
+Renders categories with pictures
+*/
 function showCategoriesPictures($caregories)
 {
 	$buildHTML = "<ul id=categoryPictures>";
@@ -615,6 +618,7 @@ function getOrderById($id){
 	$mysqli->close();
 	return $result;
 }
+//fetches orders, if order by attribute is set the result is ordered
 function getAllOrders($orderBy = "")
 {
 	$mysqli = connect();
@@ -629,6 +633,7 @@ function getAllOrders($orderBy = "")
 	$mysqli->close();
 	return $result;
 }
+//fetches all reports, if order by attribute is set the result is ordered
 function getAllReports($limit, $orderBy = "")
 {
 	$mysqli = connect();
@@ -665,6 +670,7 @@ function createProduct($name, $quantity, $price, $category, $description, $imgNa
 	$mysqli->query($sqlQuery);
 	$mysqli->close();
 }
+//drops database (to erase all the data)
 function dropDatabase()
 {
 	$mysqli = connect();
@@ -673,6 +679,7 @@ function dropDatabase()
 	$mysqli->query($sqlQuery);
 	$mysqli->close();	
 }
+//check if database and tables are ready
 function isDatabaseReady()
 {
 	$mysqli = connect("localhost","root","","");
@@ -692,6 +699,7 @@ function isDatabaseReady()
 		return false;
 	}
 }
+//sets style for website
 function setStyle($style)
 {
 	$filePath = "../css_options/".$style.".css";
@@ -700,6 +708,7 @@ function setStyle($style)
 	}
 	
 }
+//renders menu for CMS pages
 function showCmsMenu()
 {
 	$menu = '<nav id=navigation> <ul>
@@ -715,6 +724,7 @@ function showCmsMenu()
 	';
 	return $menu;
 }
+//renders menu for admin pages
 function showAdminMenu()
 {
 	$menu = '<nav> <ul>
